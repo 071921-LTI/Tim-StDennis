@@ -6,7 +6,8 @@ A Shop App:
 		*Focus on this next week. Until then...
 	*Issue: "What does 'Remove an Item' Mean? Drop it from Table? (Most likely), Make it unavailable to be selected? (Desired, given that even a removed item 
 																					in a shop would still have some presense in the product backlogs...)
-
+	*Answer: "Remove" means "Remove", so we'd have to drop it from the Items Table...
+		-But we can't just outright drop it since we need the Item information if it's removed after it's bought..
 --->
 
 <Database>

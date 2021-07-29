@@ -16,7 +16,7 @@ public class Project0Test {
 	
 	@BeforeAll
 	public static void setUp() {
-		user = new User("Test", "test");
+		//user = new User("Test", "test");
 	}
 	
 	@AfterAll

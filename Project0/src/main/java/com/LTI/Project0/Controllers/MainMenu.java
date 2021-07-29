@@ -1,9 +1,13 @@
 package com.LTI.Project0.Controllers;
 
+import java.sql.SQLException;
+
 import com.LTI.Project0.exceptions.AuthException;
 import com.LTI.Project0.exceptions.UserNotFoundException;
 import com.LTI.Project0.models.Menu;
 import com.LTI.Project0.models.User;
+import com.LTI.Project0.services.UserService;
+import com.LTI.Project0.services.UserServiceImpl;
 
 public class MainMenu extends Menu {
 	
@@ -28,7 +32,12 @@ public class MainMenu extends Menu {
 				case "2": 
 				{
 					//Register New User as Customer
-					RegisterNewCustomer();
+					try {
+						RegisterNewCustomer();
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					break;
 				}	
 				case "3":
@@ -52,22 +61,24 @@ public class MainMenu extends Menu {
 		
 		System.out.println("Please enter your User Name:");
 		
-		userName = sc.next();
+		userName = sc.nextLine();
 		
 		System.out.println("Please enter your password:");
 		
-		passWord = sc.next();
+		passWord = sc.nextLine();
 		
 		/*
 		 * Check the database if the UserName and Password are corrected.
 		 * TODO: Check Database Logic
 		 */
 		try {
-			User loggingIn = us.getUser(userName);
-			loggingIn = new User(userName,passWord);
-			if(as.login(loggingIn))
+			boolean IsUser = as.authenticateUser(userName, passWord);
+			if(IsUser)
 			{
+				FrontPage.Role="SYSTEM";
 				FrontPage.WhoAmI();
+				//User exist_User = us.getUser(userName);
+				//FrontPage.WhoAmI();
 			}
 		}
 		catch (UserNotFoundException unf_EX)
@@ -80,24 +91,30 @@ public class MainMenu extends Menu {
 		}	
 	}
 	
-	private static void RegisterNewCustomer() {
-		String firstName, lastName, middleName, n_UserName, n_Password, mICheck;
+	private static void RegisterNewCustomer() throws SQLException {
+		
+		String firstName, lastName, n_UserName, n_Password, n_Email;
 		
 		System.out.println("What is your First Name?");
 		firstName = sc.nextLine();
 		System.out.println("What is your Last Name?");
 		lastName = sc.nextLine();
-		System.out.println("Do you have a Middle Name?(Y/N)");
-		mICheck = sc.nextLine();
-		if(mICheck.equals("Y"))
-		{
-			System.out.println("What is your Middle Name?");
-			middleName = sc.nextLine();
-		}
 		System.out.println("Enter your User Name:");
 		n_UserName = sc.nextLine();
 		System.out.println("Enter your password:");
 		n_Password = sc.nextLine();
-		
+		System.out.println("Enter your email:");
+		n_Email = sc.nextLine();
+		if(us.addUser(new User(firstName, lastName, "CUSTOMER", n_UserName,n_Password, n_Email)))
+		{
+			//Success. Bring the new customer to entering payment information.
+			System.out.println("Welcome " + firstName + "! You have successfully been registered!");
+			FrontPage.Role = "CUSTOMER";
+			FrontPage.WhoAmI();
+		}
+		else
+		{
+			//Log Error here.
+		}
 	}
 }

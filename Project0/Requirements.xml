@@ -1,13 +1,20 @@
 <!-- 
 A Shop App:
 	**Dungeons and Dragons/TTRPG Centered
-
+	7/29: It's an auction house...!
+	
 	*Uses JDBC for data storage/access
-		*Focus on this next week. Until then...
 	*Issue: "What does 'Remove an Item' Mean? Drop it from Table? (Most likely), Make it unavailable to be selected? (Desired, given that even a removed item 
-																					in a shop would still have some presense in the product backlogs...)
+		in a shop would still have some presense in the product backlogs...)
 	*Answer: "Remove" means "Remove", so we'd have to drop it from the Items Table...
 		-But we can't just outright drop it since we need the Item information if it's removed after it's bought..
+		-Payment history should include the name of the item, not just the item ID.
+		-View: Library. On Confirmation of Purchase, Library is updated with the following items THAT ARE NOT REFERENCES.
+			Primary Key: Item_ID
+			VarChar: Name of item
+			OwnerID
+	*Issue: How do we track money...
+	
 --->
 
 <Database>
@@ -29,12 +36,6 @@ A Shop App:
 		NameOfItem(Varchar2/String, 20 Bytes)
 		OneTimeCost(Decimal/Price, ?? Bytes)
 		WeeklyCost(Decimal/Price, ?? Bytes)
-		State(Varchar2/String, 15 Bytes)
-			-Can only be "AVAILABLE", "PENDING OFFER", or "OWNED"
-		OwnerID(Varchar2/String, 10 Bytes)
-			-Unique series of Numbers and Characters.
-			-References User Table "ID"
-		?Available (Question Dependent variable. May need to change approach....)
 	</Table 2: "Items">
 	<Table 3: "Payment Information">
 		<!--This would be the Customer's Payment information. -->
@@ -49,12 +50,12 @@ A Shop App:
 			in the process of using the app.
 		--->
 		ID(Primary Key, Numeric, 5 Bytes)
-		BankName(Varchar2/String, 20 Bytes)
 		CreditCardNumber(Varchar2/String, 20 Bytes)
 		ExpMonth(Varchar2/String, 2 Bytes)
 		ExpYear(Varchar2/String, 2 Bytes)
 		SecurityCode(Numeric, 3 Bytes)
 			-3 Digit Security Code.
+		AccountFunds(Price)
 	</Table 4: "The Bank">
 	<Table 5: "Item Offers">
 		OfferID(PrimaryKey, VarChar2/String, 20 Bytes)
@@ -67,7 +68,7 @@ A Shop App:
 		IsWeekly(Boolean, 1 Byte)
 		Accepted(Boolean, 1 Byte)
 	</Table 5: "Item Offers">
-	<Table 6: "Payment History">
+	<View 1: "Payment History">
 		TransID(PrimaryKey, Varchar2/String, 20 Bytes)
 			-Unique Series of Number and Characters.
 		ForItem(Varchar2/String, 20 Bytes)
@@ -79,7 +80,15 @@ A Shop App:
 		Payment(Decimal/Price, ?? Bytes)
 		PayerID(Varchar2/String, 20 Bytes)
 			-The Same as ID in the Users Table.
-	</Table 6: "Payment History">
+	</View 1: "Payment History">
+	<View 2: "Inventory">
+		Item_ID(PrimaryKey)
+			Gotten from Item ID
+		Name_Of_Item(VarChar)
+			Gotten from Item.NameOfItem
+		OwnerID
+			Gotten from User.ID
+	</View 2: "Inventory">
 </Database>
 
 <Available Actions>

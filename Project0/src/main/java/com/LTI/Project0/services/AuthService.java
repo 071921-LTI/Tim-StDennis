@@ -4,5 +4,5 @@ import com.LTI.Project0.exceptions.AuthException;
 import com.LTI.Project0.models.User;
 
 public interface AuthService {
-	public abstract boolean login(User user) throws AuthException;
+	public abstract boolean authenticateUser(String userName, String password) throws AuthException;
 }

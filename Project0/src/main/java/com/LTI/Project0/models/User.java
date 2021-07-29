@@ -3,7 +3,8 @@ package com.LTI.Project0.models;
 import java.io.Serializable;
 
 public class User implements Serializable {
-	private String userName, password, firstName, lastName, middleInitial, Role;
+	private int id;
+	private String userName, password, firstName, lastName, Role, email;
 	
 	//Constructors
 	public User()
@@ -11,11 +12,15 @@ public class User implements Serializable {
 		super();
 	}
 	
-	public User(String in_UserName, String in_Password)
+	public User(String in_firstName, String in_LastName, String in_Role, String in_UserName, String in_Password, String in_Email)
 	{
 		super();
+		this.firstName = in_firstName;
+		this.lastName = in_LastName;
+		this.Role = in_Role;
 		this.userName = in_UserName;
 		this.password = in_Password;
+		this.email = in_Email;
 	}
 	
 	//Getters and Setters
@@ -47,14 +52,6 @@ public class User implements Serializable {
 		this.lastName = lastName;
 	}
 
-	public String getMiddleInitial() {
-		return middleInitial;
-	}
-
-	public void setMiddleInitial(String middleInitial) {
-		this.middleInitial = middleInitial;
-	}
-
 	public String getRole() {
 		return Role;
 	}
@@ -63,6 +60,13 @@ public class User implements Serializable {
 		Role = role;
 	}
 	
+	public String getEmail() {
+		return email;
+	}
+	
+	public void setEmail(String email) {
+		this.email = email;
+	}
 	
 	@Override
 	public boolean equals(Object obj) {
@@ -85,6 +89,9 @@ public class User implements Serializable {
 			return false;
 		return true;
 	}
+
+
+
 
 
 }

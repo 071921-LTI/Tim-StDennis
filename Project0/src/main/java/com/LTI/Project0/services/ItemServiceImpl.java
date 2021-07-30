@@ -2,28 +2,37 @@ package com.LTI.Project0.services;
 
 import java.util.List;
 
-import com.LTI.Project0.daos.ItemPostgres;
+import com.LTI.Project0.daos.DAOFactory;
 import com.LTI.Project0.models.Item;
 
 public class ItemServiceImpl implements ItemService {
 
-	private ItemPostgres i_postgres = new ItemPostgres();
-
 	@Override
 	public Item getItemByID(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		return DAOFactory.getDF().getItemDAO().getItemByID(id);
 	}
 
 	@Override
 	public List<Item> getItems() {
-		return i_postgres.getItems();
+		return DAOFactory.getDF().getItemDAO().getItems();
 	}
 
 	@Override
 	public int addItem(Item in_Item) {
-		// TODO Auto-generated method stub
-		return 0;
+		return DAOFactory.getDF().getItemDAO().addItem(in_Item);
+	}
+	
+	@Override
+	public int editItem(Item to_Edit)
+	{
+		 return DAOFactory.getDF().getItemDAO().editItem(to_Edit);
+	}
+
+	@Override
+	public void removeItem(Item to_Remove) {
+		DAOFactory.getDF().getItemDAO().removeItem(to_Remove);
+		
+		
 	}
 	
 	

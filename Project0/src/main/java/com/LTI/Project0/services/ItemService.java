@@ -8,4 +8,6 @@ public interface ItemService {
 	public abstract Item getItemByID(int id);
 	public abstract List<Item> getItems();
 	public abstract int addItem(Item in_Item);
+	public abstract int editItem(Item to_Edit);
+	public abstract void removeItem(Item to_Remove);
 }

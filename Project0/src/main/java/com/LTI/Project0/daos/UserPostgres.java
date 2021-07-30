@@ -12,9 +12,33 @@ import com.LTI.Project0.util.ConnectionUtil;
 public class UserPostgres implements UserDao{
 
 	@Override
-	public User getUser(String username) throws UserNotFoundException {
-		// TODO Auto-generated method stub
-		return null;
+	public User getUser(String in_username) throws UserNotFoundException {
+		User gotten_User = null;
+		String first_Name, last_Name, role,username,password,email;
+		String sql = "select * from users where acct_username = ?";
+		
+		try(Connection con = ConnectionUtil.getConnectionFromEnv())
+		{
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setString(1, in_username);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			if(rs.next())
+			{
+				first_Name = rs.getString("first_name");
+				last_Name = rs.getString("last_name");
+				role = rs.getString("user_Role");
+				username = rs.getString("acct_username");
+				password = rs.getString("acct_password");
+				email = rs.getString("acct_email");
+				gotten_User = new User(first_Name,last_Name,role,username,password,email);
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return gotten_User;
 	}
 
 	@Override
@@ -54,6 +78,18 @@ public class UserPostgres implements UserDao{
 		}
 		
 		return Worked;
+	}
+
+	@Override
+	public String getRole(String userName) {
+		User role = null;
+		try {
+			role = getUser(userName);
+		} catch (UserNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return role.getRole();
 	}
 
 }

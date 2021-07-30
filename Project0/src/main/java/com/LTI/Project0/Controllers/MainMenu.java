@@ -75,8 +75,7 @@ public class MainMenu extends Menu {
 			boolean IsUser = as.authenticateUser(userName, passWord);
 			if(IsUser)
 			{
-				FrontPage.Role="SYSTEM";
-				FrontPage.WhoAmI();
+				FrontPage.WhoAmI(us.getUser(userName).getRole());
 				//User exist_User = us.getUser(userName);
 				//FrontPage.WhoAmI();
 			}
@@ -109,8 +108,13 @@ public class MainMenu extends Menu {
 		{
 			//Success. Bring the new customer to entering payment information.
 			System.out.println("Welcome " + firstName + "! You have successfully been registered!");
-			FrontPage.Role = "CUSTOMER";
-			FrontPage.WhoAmI();
+			
+			try {
+				FrontPage.WhoAmI(us.getUser(n_UserName).getRole());
+			} catch (UserNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		else
 		{

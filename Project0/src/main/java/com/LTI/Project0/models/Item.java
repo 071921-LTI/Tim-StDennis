@@ -1,12 +1,13 @@
 package com.LTI.Project0.models;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 public class Item implements Serializable{
 	
 	private int id;
 	private String name, description;
-	private double OneTimePrice, WeeklyPrice;
+	private BigDecimal OneTimePrice, WeeklyPrice;
 	public int getId() {
 		return id;
 	}
@@ -25,16 +26,16 @@ public class Item implements Serializable{
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public double getOneTimePrice() {
+	public BigDecimal getOneTimePrice() {
 		return OneTimePrice;
 	}
-	public void setOneTimePrice(double oneTimePrice) {
+	public void setOneTimePrice(BigDecimal oneTimePrice) {
 		OneTimePrice = oneTimePrice;
 	}
-	public double getWeeklyPrice() {
+	public BigDecimal getWeeklyPrice() {
 		return WeeklyPrice;
 	}
-	public void setWeeklyPrice(double weeklyPrice) {
+	public void setWeeklyPrice(BigDecimal weeklyPrice) {
 		WeeklyPrice = weeklyPrice;
 	}
 	
@@ -43,7 +44,7 @@ public class Item implements Serializable{
 		super();
 	}
 	
-	public Item(int in_id, String in_Name, String in_Description, double in_OTPrice, double in_WKPrice)
+	public Item(int in_id, String in_Name, String in_Description, BigDecimal in_OTPrice, BigDecimal in_WKPrice)
 	{
 		super();
 		this.id = in_id;

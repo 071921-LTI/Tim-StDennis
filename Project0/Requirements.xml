@@ -40,8 +40,8 @@ A Shop App:
 	<Table 3: "Payment Information">
 		<!--This would be the Customer's Payment information. -->
 		-ID(Primary Key, Varchar2/String, 10 Bytes)
-			-Equal to User.ID
-		CreditCardNumber(Varchar2/String, 20 bytes)
+		-Owner ID (User_ID)
+		account_Number(Varchar2/String, 20 bytes)
 		ExpMonth(Varchar2/String, 2 Bytes)
 		ExpYear(Varchar2/String, 2 Bytes)
 	</Table 3: "Payment Information">
@@ -50,7 +50,7 @@ A Shop App:
 			in the process of using the app.
 		--->
 		ID(Primary Key, Numeric, 5 Bytes)
-		CreditCardNumber(Varchar2/String, 20 Bytes)
+		account_Number(Varchar2/String, 20 Bytes)
 		ExpMonth(Varchar2/String, 2 Bytes)
 		ExpYear(Varchar2/String, 2 Bytes)
 		SecurityCode(Numeric, 3 Bytes)

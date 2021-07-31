@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 public class Item implements Serializable{
 	
 	private int id;
-	private String name, description;
+	private String name, description, owner;
 	private BigDecimal OneTimePrice, WeeklyPrice;
 	public int getId() {
 		return id;
@@ -44,7 +44,7 @@ public class Item implements Serializable{
 		super();
 	}
 	
-	public Item(int in_id, String in_Name, String in_Description, BigDecimal in_OTPrice, BigDecimal in_WKPrice)
+	public Item(int in_id, String in_Name, String in_Description, BigDecimal in_OTPrice, BigDecimal in_WKPrice, String in_Owner)
 	{
 		super();
 		this.id = in_id;
@@ -52,11 +52,18 @@ public class Item implements Serializable{
 		this.description = in_Description;
 		this.OneTimePrice = in_OTPrice;
 		this.WeeklyPrice = in_WKPrice;
+		this.setOwner(in_Owner);
 	}
 	
 	@Override
 	public String toString() {
-		return "Item [" + getId() + "] -- " + getName() + "\n----" + getDescription() + "\nBuyout Price: " + getOneTimePrice() + "\nWeekly Price:" + getWeeklyPrice() +"\n";
+		return "Item: ID#[" + getId() + "] -- " + getName() + "\n----" + getDescription() + "\nBuyout Price: " + getOneTimePrice() + "\nWeekly Price:" + getWeeklyPrice() +"\n";
+	}
+	public String getOwner() {
+		return owner;
+	}
+	public void setOwner(String owner) {
+		this.owner = owner;
 	}
 	
 }

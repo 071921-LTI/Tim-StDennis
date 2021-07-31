@@ -8,8 +8,8 @@ import com.LTI.Project0.models.Item;
 public class ItemServiceImpl implements ItemService {
 
 	@Override
-	public Item getItemByID(int id) {
-		return DAOFactory.getDF().getItemDAO().getItemByID(id);
+	public Item getItemByID(int id,boolean owned) {
+		return DAOFactory.getDF().getItemDAO().getItemByID(id,owned);
 	}
 
 	@Override
@@ -33,6 +33,11 @@ public class ItemServiceImpl implements ItemService {
 		DAOFactory.getDF().getItemDAO().removeItem(to_Remove);
 		
 		
+	}
+
+	@Override
+	public List<Item> getItems(String ownerID) {
+		return DAOFactory.getDF().getItemDAO().getItems(ownerID);
 	}
 	
 	

@@ -11,7 +11,7 @@ import com.LTI.Project0.services.UserServiceImpl;
 
 public class MainMenu extends Menu {
 	
-	public static void Display()
+	public static void Display() throws UserNotFoundException
 	{
 		String in = "0";
 		do
@@ -53,6 +53,7 @@ public class MainMenu extends Menu {
 					break;
 				}
 			}
+			logged_In_UserName = " ";
 		}while(!in.equals("3"));
 	}
 
@@ -68,21 +69,16 @@ public class MainMenu extends Menu {
 		passWord = sc.nextLine();
 		
 		/*
-		 * Check the database if the UserName and Password are corrected.
+		 * Check the database if the UserName and Password are correct.
 		 * TODO: Check Database Logic
 		 */
 		try {
 			boolean IsUser = as.authenticateUser(userName, passWord);
 			if(IsUser)
 			{
-				FrontPage.WhoAmI(us.getUser(userName).getRole());
-				//User exist_User = us.getUser(userName);
-				//FrontPage.WhoAmI();
+				logged_In_UserName = userName;
+				FrontPage.WhoAmI(us.getUser(logged_In_UserName).getRole());
 			}
-		}
-		catch (UserNotFoundException unf_EX)
-		{
-			System.out.println("The User Name and/or PassWord is incorrect.");	
 		}
 		catch (AuthException au_EX)
 		{
@@ -90,7 +86,7 @@ public class MainMenu extends Menu {
 		}	
 	}
 	
-	private static void RegisterNewCustomer() throws SQLException {
+	private static void RegisterNewCustomer() throws SQLException, UserNotFoundException {
 		
 		String firstName, lastName, n_UserName, n_Password, n_Email;
 		
@@ -108,13 +104,8 @@ public class MainMenu extends Menu {
 		{
 			//Success. Bring the new customer to entering payment information.
 			System.out.println("Welcome " + firstName + "! You have successfully been registered!");
-			
-			try {
-				FrontPage.WhoAmI(us.getUser(n_UserName).getRole());
-			} catch (UserNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			logged_In_UserName = n_UserName;
+			FrontPage.WhoAmI(us.getUser(logged_In_UserName).getRole());
 		}
 		else
 		{

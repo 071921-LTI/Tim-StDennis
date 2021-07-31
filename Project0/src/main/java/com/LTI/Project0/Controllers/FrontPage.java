@@ -1,17 +1,29 @@
 package com.LTI.Project0.Controllers;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.List;
 
+import com.LTI.Project0.exceptions.UserNotFoundException;
 import com.LTI.Project0.models.Item;
 import com.LTI.Project0.models.Menu;
+import com.LTI.Project0.models.Offer;
 
 public class FrontPage extends Menu {
 	
+	/*Static declarations
+	 * In: A string that will receive most of the Scanner's inputs.
+	 * incre: integer used to "browse" through the items.
+	 * limit: integer used to limit the items displayed.
+	 */
 	static String In;
 	private static int incre=0, limit=10;
+	
+	
 	public static void WhoAmI(String Role)
 	{
+		//Each user has a different role, and every role has defined actions.
 		switch(Role)
 		{
 			case "CUSTOMER":
@@ -54,7 +66,7 @@ public class FrontPage extends Menu {
 					ManagerFrontPage();
 					break;
 				case "4":
-					System.out.println("Have a nice day!");
+					System.out.println("Logging Out.");
 					break;
 				default: 
 				{
@@ -79,6 +91,7 @@ public class FrontPage extends Menu {
 					BrowseItems();
 					break;
 				case "2":
+					ViewInventory();
 					break;
 				case "3":
 					System.out.println("Have a nice day!");
@@ -92,6 +105,7 @@ public class FrontPage extends Menu {
 			}
 		}while(!In.equals("3"));	
 	}				
+
 	private static void ManagerFrontPage() {
 		// TODO Auto-generated method stub
 		do
@@ -136,11 +150,13 @@ public class FrontPage extends Menu {
 			switch(In)
 			{
 				case "1":
+					CheckPendingOffers();
 					break;
 				case "2":
 					EnterIMS();
 					break;
 				case "3":
+					ViewAllPayments();
 					break;
 				case "4":
 					System.out.println("Have a nice day!");
@@ -156,8 +172,100 @@ public class FrontPage extends Menu {
 	}
 
 	
+	private static void ViewAllPayments() {
+		os.ViewAllPAyments();
+	}
+
+	private static void CheckPendingOffers() {
+		// TODO Auto-generated method stub
+		List<Offer> offersAvailable = os.getAllPEndingOffers();
+		int numOfItems = offersAvailable.size();
+		do
+		{
+			for(int i = incre; i < limit; i++)
+			{
+				try
+				{
+					System.out.println(i + ":) " + offersAvailable.get(i).toString());
+				}
+				catch(IndexOutOfBoundsException ndx_EX)
+				{
+					//Log it.
+					break;
+				}
+					
+			}
+			DisplayOptions("Browsing Screen", 
+					"1:)Next 10 items.", 
+					"2:)Previous 10 item.", 
+					"3:)Select Offer",
+					"4:)Back to Main Menu");
+			In = sc.nextLine();
+			switch(In)
+			{
+				case "1":
+					Show10(numOfItems, "NEXT");
+					break;
+				case "2":
+					Show10(numOfItems, "PREVIOUS");
+					break;
+				case "3":
+					SelectOffer(offersAvailable);
+					break;
+				case "4":
+					break;
+				default:
+					System.out.println("Invalid input");
+					break;
+			}
+		}while(!In.equals("5"));
+		
+	}
+
+	private static void SelectOffer(List<Offer> offersAvailable) {
+		// TODO Auto-generated method stub
+		String in_ID = "0";
+		System.out.println("Please enter the Offer ID you would like to select");
+		in_ID = sc.nextLine();
+		Offer selected_Offer = offersAvailable.get(Integer.valueOf(in_ID)-1);
+		if(selected_Offer == null)
+		{
+			System.out.println("Sorry, that offer does not exist.");
+		}
+		else
+		{
+			System.out.println("Offer Found:");
+			AcceptOrReject(selected_Offer);
+		}
+
+	}
+
+	private static void AcceptOrReject(Offer selected_Offer) {
+		System.out.println(selected_Offer.toString());
+		DisplayOptions("What will you do with this offer?",
+						"1:)Accept Offer",
+						"2:)Reject Offer",
+						"3:)Go Back");
+		In = sc.nextLine();
+		switch(In)
+		{
+			case "1":
+				os.acceptBid(is.getItemByID(selected_Offer.getFor_Item(), false), selected_Offer.getOffer_From());
+				break;
+			case "2":
+				os.rejectBid(is.getItemByID(selected_Offer.getFor_Item(), false), selected_Offer.getOffer_From());
+				break;
+			case "3":
+				break;
+			default:
+				break;
+		}
+		
+	}
+
 	private static void BrowseItems() {
 		List<Item> itemsAvailable = is.getItems();
+		int numOfItems = itemsAvailable.size();
 		do
 		{
 			for(int i = incre; i < limit; i++)
@@ -174,25 +282,27 @@ public class FrontPage extends Menu {
 					
 			}
 			DisplayOptions("Browsing Screen", 
-					"1:)Next 10.", 
-					"2:)Previous 10.", 
-					"3:)Search for specific ID",
+					"1:)Next 10 items.", 
+					"2:)Previous 10 item.", 
+					"3:)Search for an item with a specific ID",
 					"4:)Select Item",
 					"5:)Back to Main Menu");
 			In = sc.nextLine();
 			switch(In)
 			{
 				case "1":
-					Show10(itemsAvailable.size(), "NEXT");
+					Show10(numOfItems, "NEXT");
 					break;
 				case "2":
-					Show10(itemsAvailable.size(), "PREVIOUS");
+					Show10(numOfItems, "PREVIOUS");
 					break;
 				case "3":
 					SearchMenu();
 					break;
 				case "4":
-					InspectItem(itemsAvailable);
+					InspectItem(itemsAvailable,true);
+					break;
+				case "5":
 					break;
 				default:
 					System.out.println("Invalid input");
@@ -202,77 +312,215 @@ public class FrontPage extends Menu {
 		
 	}
 	
-	private static void InspectItem(List<Item> itemsAvailable) {
-		String ins_ID = "0", opt_in = "0";
-		
-		System.out.println("Enter the ID of the item you want to look at.");
-		ins_ID = sc.nextLine();
-		int InspectedID = Integer.valueOf(ins_ID);
-		InspectedID--;
-		if(!itemsAvailable.get(InspectedID).equals(null))
-		{
-			Item selected = itemsAvailable.get(InspectedID);
-			do
-			{
-				System.out.println(selected.toString());
-				DisplayOptions("What would you like to do?",
-						"1:)Buy it out",
-						"2:)Bid on it",
-						"3:)Exit");
-				opt_in = sc.nextLine();
-				switch(opt_in)
-				{
-					case "1":
-						//is.addTransaction
-						break;
-					case "2":
-						//is.addOffer
-						break;
-					case "3":
-						break;
-					default:
-						System.out.println("Invalid input");
-						break;
-				}
-			}while(!opt_in.equals("3"));
+	private static void ViewInventory() {
+		List<Item> itemsAvailable = null;
+		try {
+			itemsAvailable = is.getItems(us.getUser(logged_In_UserName).getUsername());
+		} catch (UserNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		else
+		int numOfItems = itemsAvailable.size();
+		if(numOfItems <= 0)
 		{
-			System.out.println("The item could not be found, or is not in the system.");
+			System.out.println("There are no items in your inventory.");
+			return;
 		}
-	}
-	private static void InspectItem(Item selectedItem) {
-		String opt_in = "0";
 		do
 		{
-			System.out.println(selectedItem.toString());
-			DisplayOptions("What would you like to do?",
-					"1:)Buy it out",
-					"2:)Bid on it",
-					"3:)Exit");
-			opt_in = sc.nextLine();
-			switch(opt_in)
+			for(int i = incre; i < limit; i++)
+			{
+				try
+				{
+					System.out.println(itemsAvailable.get(i).toString());
+				}
+				catch(IndexOutOfBoundsException ndx_EX)
+				{
+					//Log it.
+					break;
+				}
+					
+			}
+			DisplayOptions("Browsing Screen", 
+					"1:)Next 10 items.", 
+					"2:)Previous 10 item.",
+					"3:)Select Item",
+					"4:)Back to Main Menu");
+			In = sc.nextLine();
+			switch(In)
 			{
 				case "1":
-					//is.addTransaction
+					Show10(numOfItems, "NEXT");
 					break;
 				case "2":
-					//is.addOffer
+					Show10(numOfItems, "PREVIOUS");
 					break;
 				case "3":
+					InspectItem(itemsAvailable, false);
+					break;					
+				case "4":
 					break;
 				default:
 					System.out.println("Invalid input");
 					break;
 			}
-		}while(!opt_in.equals("3"));
+		}while(!In.equals("4"));
+		
+	}
+	
+	private static void InspectItem(List<Item> itemsAvailable, boolean shopping) {
+		String ins_ID = "0";
+		boolean finished = false;
+		System.out.println("Enter the ID of the item you want to look at.");
+		ins_ID = sc.nextLine();
+		Item selected = null;
+		int InspectedID = Integer.valueOf(ins_ID);
+		if(shopping)
+			selected = is.getItemByID(InspectedID, false);
+		else
+			selected = is.getItemByID(InspectedID, true);
+		
+		if(selected.getId() == InspectedID)
+		{
+			if(shopping)
+			{
+				do
+				{
+					System.out.println(selected.toString());
+					DisplayOptions("What would you like to do?",
+							"1:)Buy it out",
+							"2:)Bid on it",
+							"3:)Exit");
+					In = sc.nextLine();
+					switch(In)
+					{
+						case "1":
+							BuyOutItem(selected);
+							finished = true;
+							break;
+						case "2":
+							BidOnItem(selected.getOneTimePrice(), selected.getWeeklyPrice(), selected);
+							finished = true;
+							break;
+						case "3":
+							finished = true;
+							break;
+						default:
+							System.out.println("Invalid input");
+							break;
+					}
+				}while(!finished);
+				System.out.println("Press Enter to continue");
+				sc.nextLine();
+			}
+			else
+			{
+				System.out.println(selected.toString());
+				System.out.println("You are currently paying " + os.getWeeklyPayment(selected).toString());
+				ViewPayments(selected);
+			}
+		}
+		else
+		{
+			System.out.println("We're sorry, this item is owned by someone else, or it is not in the system.");
+		}
+	}
+	
+	private static void ViewPayments(Item selected) {
+		BigDecimal remainingPayments;
+		remainingPayments = os.getWeeklyPayment(selected);
+		BigDecimal originalPrice = selected.getOneTimePrice();
+		BigDecimal result = originalPrice.divide(remainingPayments);
+		result = result.round(new MathContext(0,RoundingMode.UP));
+		System.out.println("You have " + result.toString() + " payments remaining on this item.");
+	}
+
+	private static void BuyOutItem(Item selected) {
+		try {
+			os.addTransaction(selected.getOneTimePrice(), selected, us.getUser(logged_In_UserName).getUsername());
+		} catch (UserNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+	}
+
+	private static void BidOnItem(BigDecimal otPrice, BigDecimal wkPrice, Item itemToBid) {
+		BigDecimal bd_Offer = new BigDecimal(0);
+		System.out.println("How much would you like to pay for this item?");
+		bd_Offer = sc.nextBigDecimal();
+		if(bd_Offer.compareTo(otPrice) == -1)
+		{
+			//Alright, it's less than the One Time Price. Now let's compare against the weekly price.
+			if(bd_Offer.compareTo(wkPrice) == -1)
+			{
+				//...But you want to pay less than the listed price.
+				System.out.println("Bid is less than the listed Weekly price. Bid automatically rejected.");
+				try {
+					os.offerBid(bd_Offer,itemToBid,us.getUser(logged_In_UserName).getUsername(),true);
+				} catch (UserNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			else if(bd_Offer.compareTo(wkPrice) == 0 || bd_Offer.compareTo(wkPrice) == 1)
+			{
+				try {
+					os.offerBid(bd_Offer,itemToBid,us.getUser(logged_In_UserName).getUsername());
+				} catch (UserNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		else if(bd_Offer.compareTo(otPrice) == 0 || bd_Offer.compareTo(otPrice) == 1)
+		{
+			//Why didn't you just outright buy it then?
+			System.out.println("Bid is greater than or equal to the listed One-Time Price. Would you like to buy it instead?*(Y/N)");
+			In = sc.nextLine();
+			if(In.equals("Y") || In.equals("y"))
+			{
+				BuyOutItem(itemToBid);
+			}
+		}	
+	}
+
+	private static void InspectItemFromSearch(Item selectedItem) {
+		String opt_in = "0";
+		boolean finished = false;
+		do {
+			System.out.println(selectedItem.toString());
+			DisplayOptions("What would you like to do?",
+					"1:)Buy it out",
+					"2:)Bid on it",
+					"3:)Exit");
+			In = sc.nextLine();
+			switch(In)
+			{
+				case "1":
+					BuyOutItem(selectedItem);
+					finished = true;
+					break;
+				case "2":
+					BidOnItem(selectedItem.getOneTimePrice(),selectedItem.getWeeklyPrice(), selectedItem);
+					finished = true;
+					break;
+				case "3":
+					finished = true;
+					break;
+				default:
+					System.out.println("Invalid input");
+					break;
+			}
+		}while(!finished);
+		System.out.println("Press Enter to continue");
+		sc.nextLine();
 	}
 
 	private static void SearchMenu() {
 		String in_ID = "0";
 		System.out.println("Please enter the ID you would like to search for");
 		in_ID = sc.nextLine();
-		Item searched_Item = is.getItemByID(Integer.valueOf(in_ID));
+		Item searched_Item = is.getItemByID(Integer.valueOf(in_ID),true);
 		if(searched_Item == null)
 		{
 			System.out.println("Sorry, that item does not exist.");
@@ -280,7 +528,7 @@ public class FrontPage extends Menu {
 		else
 		{
 			System.out.println("Item Found:");
-			InspectItem(searched_Item);
+			InspectItemFromSearch(searched_Item);
 		}
 	}
 
@@ -349,7 +597,7 @@ public class FrontPage extends Menu {
 	private static void RemoveItem() {
 		System.out.println("Enter the ID of the item you wish to remove");
 		In = sc.nextLine();
-		Item to_Remove = is.getItemByID(Integer.valueOf(In));
+		Item to_Remove = is.getItemByID(Integer.valueOf(In),false);
 		System.out.println(to_Remove);
 		System.out.println("Is this the item you want removed?(Y/N)");
 		In = sc.nextLine();
@@ -379,7 +627,7 @@ public class FrontPage extends Menu {
 		item_otPrice = sc.nextBigDecimal();
 		System.out.println("Weekly Price:");
 		item_wkPrice = sc.nextBigDecimal();
-		Item add_Item = new Item(id,item_Name,item_Descr,item_otPrice,item_wkPrice);
+		Item add_Item = new Item(id,item_Name,item_Descr,item_otPrice,item_wkPrice,"N/A");
 		is.addItem(add_Item);
 	}
 
@@ -387,7 +635,7 @@ public class FrontPage extends Menu {
 		System.out.println("Please enter the ID of the item you want to update.");
 		In = sc.nextLine();
 		int edited = Integer.valueOf(In);
-		Item to_Edit = is.getItemByID(edited);
+		Item to_Edit = is.getItemByID(edited,false);
 		if(to_Edit.equals(null))
 		{
 			System.out.println("Incorrect ID");

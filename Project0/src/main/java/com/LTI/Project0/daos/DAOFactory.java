@@ -5,6 +5,7 @@ public class DAOFactory {
 	private static DAOFactory df;
 	private static ItemPostgres ipg;
 	private static UserPostgres upg;
+	private static OfferPostgres opg;
 	private DAOFactory() {
 	}
 	
@@ -24,6 +25,12 @@ public class DAOFactory {
 		if(upg == null)
 			upg = new UserPostgres();
 		return upg;
+	}
+	
+	public synchronized static OfferDao getOfferDAO() {
+		if(opg == null)
+			opg = new OfferPostgres();
+		return opg;
 	}
 	
 }

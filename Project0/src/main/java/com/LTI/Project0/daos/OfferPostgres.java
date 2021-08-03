@@ -28,6 +28,9 @@ public class OfferPostgres implements OfferDao {
 				+ "date_of_accept)"
 				+ "values(?,?,?,?,false,'ACCEPTED',current_date,current_date) returning offer_id";
 		int id = -1;
+		String sql_ChgOwner = "update items set"
+				+ "item_owner = ?"
+				+ "where for_itemId = ?";
 		try (Connection con = ConnectionUtil.getConnectionFromEnv()){
 			PreparedStatement ps = con.prepareStatement(sql);
 			ps.setInt(1, selected.getId());
@@ -39,6 +42,11 @@ public class OfferPostgres implements OfferDao {
 			
 			if(rs.next()) {
 				id = rs.getInt("offer_id");
+				PreparedStatement ps2 = con.prepareStatement(sql_ChgOwner);
+				ps.setString(1, buyer);
+				ps.setInt(2, selected.getId());
+				
+				id = ps2.executeUpdate();
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -110,9 +118,9 @@ public class OfferPostgres implements OfferDao {
 
 	@Override
 	public boolean rejectAllOtherBids(int item_ID, String owner_ID) {
-		String sql = "update item_offers set"
-				+ "accept_offer = 'REJECTED'"
-				+ "where for_itemId = ? AND"
+		String sql = "update item_offers set "
+				+ "accept_offer = 'REJECTED' "
+				+ "where for_itemId = ? AND "
 				+ "NOT offer_from = ?";
 		int rowsChanged = -1;
 		
@@ -135,12 +143,12 @@ public class OfferPostgres implements OfferDao {
 
 	@Override
 	public void acceptBid(Item selected, String ownerID) {
-		String sql_ChgOwner = "update items set"
-				+ "item_owner = ?"
-				+ "where for_itemId = ?";
-		String sql_UpdOffers = "update item_offers set"
-				+ "accept_offer = 'ACCEPTED'"
-				+ "where for_itemId = ? AND"
+		String sql_ChgOwner = "update items set "
+				+ "item_owner = ? "
+				+ "where item_id = ?";
+		String sql_UpdOffers = "update item_offers set "
+				+ "accept_offer = 'ACCEPTED' "
+				+ "where for_itemId = ? AND "
 				+ "offer_from = ?";
 		int rowsChanged = -1;
 		try(Connection con = ConnectionUtil.getConnectionFromEnv())
@@ -164,7 +172,7 @@ public class OfferPostgres implements OfferDao {
 	}
 	@Override
 	public void rejectBid(Item selected, String ownerID) {
-		String sql_UpdOffers = "update item_offers set"
+		String sql_UpdOffers = "update item_offers set "
 				+ "accept_offer = 'REJECTED'"
 				+ "where for_itemId = ? AND"
 				+ "offer_from = ?";
@@ -211,7 +219,6 @@ public class OfferPostgres implements OfferDao {
 			PreparedStatement ps = con.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			
-			if(rs.next()) {
 				while(rs.next()) {
 					int offer_ID = rs.getInt("offer_id");
 					int item_ID = rs.getInt("for_itemid");
@@ -222,8 +229,6 @@ public class OfferPostgres implements OfferDao {
 					Offer new_deal = new Offer(offer_ID,item_ID,item_Name,Payer,Offering,is_Weekly);
 					offers.add(new_deal);
 				}
-				
-			}
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}
@@ -263,6 +268,33 @@ public class OfferPostgres implements OfferDao {
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}		
+	}
+
+	@Override
+	public Offer getOfferByID(Integer valueOf) {
+		Offer retval = new Offer();
+		String sql = "select * from item_offers where offer_id = ?";
+		try(Connection con = ConnectionUtil.getConnectionFromEnv())
+		{
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setInt(1, valueOf);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			if(rs.next()) {			
+				retval.setId(rs.getInt("offer_id"));
+				retval.setFor_Item(rs.getInt("for_itemid"));
+				retval.setFor_ItemName(rs.getString("for_itemname"));
+				retval.setOffer_From(rs.getString("offer_from"));
+				retval.setOffering_ToPay(rs.getBigDecimal("offering_to_pay"));
+				retval.setIs_Weekly(rs.getBoolean("is_weekly"));
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}	
+		
+		
+		return retval;
 	}
 
 }

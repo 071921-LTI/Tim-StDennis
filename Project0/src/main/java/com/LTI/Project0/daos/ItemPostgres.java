@@ -165,10 +165,12 @@ public class ItemPostgres implements ItemDao {
 	@Override
 	public void removeItem(Item to_Remove) {
 		String sql = "delete from items where item_id = ?";
+		int rowsChanged = -1;
 		try (Connection con = ConnectionUtil.getConnectionFromEnv()){
 			PreparedStatement ps = con.prepareStatement(sql);
 			ps.setInt(1, to_Remove.getId());
-		} catch (SQLException e) {
+			rowsChanged = ps.executeUpdate();
+			} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}		

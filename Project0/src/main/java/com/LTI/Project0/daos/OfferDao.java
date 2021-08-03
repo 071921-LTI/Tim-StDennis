@@ -16,4 +16,5 @@ public interface OfferDao {
 	public abstract List<Offer> getAllPEndingOffers();
 	public abstract void rejectBid(Item selected, String ownerID);
 	public abstract void ViewAllPAyments();
+	public abstract Offer getOfferByID(Integer valueOf);
 }

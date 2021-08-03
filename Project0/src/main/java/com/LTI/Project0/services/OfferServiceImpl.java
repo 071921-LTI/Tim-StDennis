@@ -60,4 +60,9 @@ public class OfferServiceImpl implements OfferService {
 		
 	}
 
+	@Override
+	public Offer getOfferByID(Integer valueOf) {
+		return DAOFactory.getDF().getOfferDAO().getOfferByID(valueOf);
+	}
+
 }

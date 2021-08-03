@@ -210,7 +210,7 @@ public class FrontPage extends Menu {
 					Show10(numOfItems, "PREVIOUS");
 					break;
 				case "3":
-					SelectOffer(offersAvailable);
+					SelectOffer();
 					break;
 				case "4":
 					break;
@@ -218,16 +218,16 @@ public class FrontPage extends Menu {
 					System.out.println("Invalid input");
 					break;
 			}
-		}while(!In.equals("5"));
+		}while(!In.equals("4"));
 		
 	}
 
-	private static void SelectOffer(List<Offer> offersAvailable) {
+	private static void SelectOffer() {
 		// TODO Auto-generated method stub
 		String in_ID = "0";
 		System.out.println("Please enter the Offer ID you would like to select");
 		in_ID = sc.nextLine();
-		Offer selected_Offer = offersAvailable.get(Integer.valueOf(in_ID)-1);
+		Offer selected_Offer = os.getOfferByID(Integer.valueOf(in_ID));
 		if(selected_Offer == null)
 		{
 			System.out.println("Sorry, that offer does not exist.");
@@ -601,12 +601,12 @@ public class FrontPage extends Menu {
 		System.out.println(to_Remove);
 		System.out.println("Is this the item you want removed?(Y/N)");
 		In = sc.nextLine();
-		if(In == "Y" || In == "y")
+		if(In.equals("Y") || In.equals("y"))
 		{
 			System.out.println("Understood.");
 			is.removeItem(to_Remove);
 		}
-		else if(In == "N" || In == "n")
+		else if(In.equals("N") || In.equals("n"))
 		{
 			System.out.println("Returning to menu");
 		}	

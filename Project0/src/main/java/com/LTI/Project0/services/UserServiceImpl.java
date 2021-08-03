@@ -8,8 +8,6 @@ import com.LTI.Project0.models.User;
 
 public class UserServiceImpl implements UserService {
 
-	
-	
 	@Override
 	public boolean addUser(User user) throws SQLException {
 		return (DAOFactory.getDF().getUserDAO().addUser(user)>1);
@@ -21,7 +19,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public String GetRole(String username) {
+	public String GetRole(String username) throws UserNotFoundException {
 		return DAOFactory.getDF().getUserDAO().getRole(username);
 	}
 

@@ -16,7 +16,7 @@ import com.LTI.Project0.util.ConnectionUtil;
 public class OfferPostgres implements OfferDao {
 
 	@Override
-	public void addTransaction(BigDecimal payment, Item selected, String buyer) {
+	public int addTransaction(BigDecimal payment, Item selected, String buyer) {
 		String sql = "insert into item_offers("
 				+ "for_itemid,"
 				+ "for_itemname,"
@@ -28,9 +28,9 @@ public class OfferPostgres implements OfferDao {
 				+ "date_of_accept)"
 				+ "values(?,?,?,?,false,'ACCEPTED',current_date,current_date) returning offer_id";
 		int id = -1;
-		String sql_ChgOwner = "update items set"
+		String sql_ChgOwner = "update items set "
 				+ "item_owner = ?"
-				+ "where for_itemId = ?";
+				+ " where item_id = ?";
 		try (Connection con = ConnectionUtil.getConnectionFromEnv()){
 			PreparedStatement ps = con.prepareStatement(sql);
 			ps.setInt(1, selected.getId());
@@ -43,8 +43,8 @@ public class OfferPostgres implements OfferDao {
 			if(rs.next()) {
 				id = rs.getInt("offer_id");
 				PreparedStatement ps2 = con.prepareStatement(sql_ChgOwner);
-				ps.setString(1, buyer);
-				ps.setInt(2, selected.getId());
+				ps2.setString(1, buyer);
+				ps2.setInt(2, selected.getId());
 				
 				id = ps2.executeUpdate();
 			}
@@ -52,11 +52,12 @@ public class OfferPostgres implements OfferDao {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
+		return id;
 	}
 
 	@Override
-	public void offerBid(BigDecimal bid, Item selected, String bidder) {
+	public int offerBid(BigDecimal bid, Item selected, String bidder) {
 		String sql = "insert into item_offers("
 				+ "for_itemid,"
 				+ "for_itemname,"
@@ -82,11 +83,11 @@ public class OfferPostgres implements OfferDao {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		//return id;
+		return id;
 	}
 
 	@Override
-	public void offerBid(BigDecimal bid, Item selected, String bidder, boolean auto_Reject) {
+	public int offerBid(BigDecimal bid, Item selected, String bidder, boolean auto_Reject) {
 		String sql = "insert into item_offers("
 				+ "for_itemid,"
 				+ "for_itemname,"
@@ -113,7 +114,7 @@ public class OfferPostgres implements OfferDao {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		return id;
 	}
 
 	@Override
@@ -142,7 +143,7 @@ public class OfferPostgres implements OfferDao {
 	}
 
 	@Override
-	public void acceptBid(Item selected, String ownerID) {
+	public int acceptBid(Item selected, String ownerID) {
 		String sql_ChgOwner = "update items set "
 				+ "item_owner = ? "
 				+ "where item_id = ?";
@@ -168,13 +169,13 @@ public class OfferPostgres implements OfferDao {
 			e.printStackTrace();
 		}
 		rejectAllOtherBids(selected.getId(),ownerID);
-		
+		return rowsChanged;
 	}
 	@Override
-	public void rejectBid(Item selected, String ownerID) {
+	public int rejectBid(Item selected, String ownerID) {
 		String sql_UpdOffers = "update item_offers set "
 				+ "accept_offer = 'REJECTED'"
-				+ "where for_itemId = ? AND"
+				+ "where for_itemId = ? AND "
 				+ "offer_from = ?";
 		int rowsChanged = -1;
 		try(Connection con = ConnectionUtil.getConnectionFromEnv())
@@ -186,7 +187,8 @@ public class OfferPostgres implements OfferDao {
 			rowsChanged = ps_UpdOffers.executeUpdate();
 		}catch(SQLException e) {
 			e.printStackTrace();
-		}	
+		}
+		return rowsChanged;
 	}
 	@Override
 	public BigDecimal getWeeklyPayment(Item Selected) {
@@ -261,9 +263,7 @@ public class OfferPostgres implements OfferDao {
 					output += " to " + payer + " On " + datePaid.toString();
 					System.out.println(output);
 						
-				}
-				
-				
+				}	
 			}
 		}catch(SQLException e) {
 			e.printStackTrace();

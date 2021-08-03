@@ -34,6 +34,8 @@ public class UserPostgres implements UserDao{
 				email = rs.getString("acct_email");
 				gotten_User = new User(first_Name,last_Name,role,username,password,email);
 			}
+			else
+				throw new UserNotFoundException();
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}
@@ -81,13 +83,13 @@ public class UserPostgres implements UserDao{
 	}
 
 	@Override
-	public String getRole(String userName) {
+	public String getRole(String userName) throws UserNotFoundException {
 		User role = null;
 		try {
 			role = getUser(userName);
 		} catch (UserNotFoundException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new UserNotFoundException();
 		}
 		return role.getRole();
 	}

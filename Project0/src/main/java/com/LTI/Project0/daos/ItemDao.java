@@ -10,5 +10,5 @@ public interface ItemDao {
 	public abstract List<Item> getItems(String ownerID);
 	public abstract int addItem(Item in_Item);
 	public abstract int editItem(Item to_Edit);
-	public abstract void removeItem(Item to_Remove);
+	public abstract int removeItem(Item to_Remove);
 }

@@ -5,6 +5,9 @@ import java.math.MathContext;
 import java.math.RoundingMode;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.LTI.Project0.exceptions.UserNotFoundException;
 import com.LTI.Project0.models.Item;
 import com.LTI.Project0.models.Menu;
@@ -19,7 +22,7 @@ public class FrontPage extends Menu {
 	 */
 	static String In;
 	private static int incre=0, limit=10;
-	
+	public static Logger log = LogManager.getRootLogger();
 	
 	public static void WhoAmI(String Role)
 	{
@@ -46,6 +49,7 @@ public class FrontPage extends Menu {
 	//Front Pages
 	
 	private static void AdminFrontPage() {
+		log.info("User is the System Admin");
 		do
 		{
 			DisplayOptions("Welcome System Admin. Please select an option:",
@@ -77,7 +81,9 @@ public class FrontPage extends Menu {
 			}
 		}while(!In.equals("4"));
 	}
+	
 	private static void CustomerFrontPage() {
+		log.info("User is a Customer");
 		do
 		{
 			DisplayOptions("Welcome! Please select an option:", 
@@ -107,7 +113,7 @@ public class FrontPage extends Menu {
 	}				
 
 	private static void ManagerFrontPage() {
-		// TODO Auto-generated method stub
+		log.info("User is the Manager");
 		do
 		{
 			DisplayOptions("Welcome! Please select an option:", 
@@ -138,7 +144,7 @@ public class FrontPage extends Menu {
 		
 	}
 	private static void EmployeeFrontPage() {
-		// TODO Auto-generated method stub
+		log.info("User is an Employee");
 		do
 		{
 			DisplayOptions("Welcome! Please select an option:", 
@@ -177,8 +183,9 @@ public class FrontPage extends Menu {
 	}
 
 	private static void CheckPendingOffers() {
-		// TODO Auto-generated method stub
+		log.info("Function: CheckPendingOffers");
 		List<Offer> offersAvailable = os.getAllPEndingOffers();
+		log.info("Offers Available: " + offersAvailable.size());
 		int numOfItems = offersAvailable.size();
 		do
 		{
@@ -190,7 +197,7 @@ public class FrontPage extends Menu {
 				}
 				catch(IndexOutOfBoundsException ndx_EX)
 				{
-					//Log it.
+					log.warn("Went out of bounds for Offers Available. (Probably not enough Offers in the DB.)");
 					break;
 				}
 					
@@ -223,17 +230,20 @@ public class FrontPage extends Menu {
 	}
 
 	private static void SelectOffer() {
-		// TODO Auto-generated method stub
+		log.info("Selecting offer");
 		String in_ID = "0";
 		System.out.println("Please enter the Offer ID you would like to select");
 		in_ID = sc.nextLine();
 		Offer selected_Offer = os.getOfferByID(Integer.valueOf(in_ID));
+		
 		if(selected_Offer == null)
 		{
+			log.warn("Offer[" + in_ID + "] did not exist. Maybe it's not in the DB?");
 			System.out.println("Sorry, that offer does not exist.");
 		}
 		else
 		{
+			log.info("Offer Selected: " + selected_Offer.toString());
 			System.out.println("Offer Found:");
 			AcceptOrReject(selected_Offer);
 		}
@@ -257,8 +267,6 @@ public class FrontPage extends Menu {
 				break;
 			case "3":
 				break;
-			default:
-				break;
 		}
 		
 	}
@@ -266,6 +274,7 @@ public class FrontPage extends Menu {
 	private static void BrowseItems() {
 		List<Item> itemsAvailable = is.getItems();
 		int numOfItems = itemsAvailable.size();
+		log.info("Items Available: " + itemsAvailable.size());
 		do
 		{
 			for(int i = incre; i < limit; i++)
@@ -276,7 +285,7 @@ public class FrontPage extends Menu {
 				}
 				catch(IndexOutOfBoundsException ndx_EX)
 				{
-					//Log it.
+					log.warn("Index out of bounds for itemsAvailable, probably had an issue with paging...");
 					break;
 				}
 					
@@ -317,15 +326,18 @@ public class FrontPage extends Menu {
 		try {
 			itemsAvailable = is.getItems(us.getUser(logged_In_UserName).getUsername());
 		} catch (UserNotFoundException e) {
-			// TODO Auto-generated catch block
+			log.error("User Not Found Exception thrown. Stack Trace below: " + e.getMessage());
 			e.printStackTrace();
 		}
 		int numOfItems = itemsAvailable.size();
+
 		if(numOfItems <= 0)
 		{
 			System.out.println("There are no items in your inventory.");
+			log.warn("No items found for current User(" + logged_In_UserName + ")");
 			return;
 		}
+		log.info("Items Available for current User(" + logged_In_UserName + "): " + numOfItems);
 		do
 		{
 			for(int i = incre; i < limit; i++)
@@ -336,7 +348,7 @@ public class FrontPage extends Menu {
 				}
 				catch(IndexOutOfBoundsException ndx_EX)
 				{
-					//Log it.
+					log.warn("Index out of bounds exception thrown. Probably not enough items for paging.");
 					break;
 				}
 					
@@ -382,6 +394,7 @@ public class FrontPage extends Menu {
 		
 		if(selected.getId() == InspectedID)
 		{
+			log.info("Found the item being searched for(ID:" + selected.getId() + ")");
 			if(shopping)
 			{
 				do
@@ -422,6 +435,7 @@ public class FrontPage extends Menu {
 		}
 		else
 		{
+			log.info("Either the item being searched for isn't in the system, or the item is owned by someone other than the logged in user.");
 			System.out.println("We're sorry, this item is owned by someone else, or it is not in the system.");
 		}
 	}
@@ -439,7 +453,7 @@ public class FrontPage extends Menu {
 		try {
 			os.addTransaction(selected.getOneTimePrice(), selected, us.getUser(logged_In_UserName).getUsername());
 		} catch (UserNotFoundException e) {
-			// TODO Auto-generated catch block
+			log.error("User Not Found Exception thrown. Stack track below:" + e.getMessage());
 			e.printStackTrace();
 		}		
 	}

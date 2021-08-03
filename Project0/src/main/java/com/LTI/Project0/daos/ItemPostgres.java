@@ -20,6 +20,8 @@ public class ItemPostgres implements ItemDao {
 		String sql = "select * from items where item_id = ?";
 		if(owned == false)
 			sql = sql.concat(" AND item_owner = 'N/A'");
+		else
+			sql = sql.concat(" AND NOT item_owner = 'N/A'");
 		try(Connection con = ConnectionUtil.getConnectionFromEnv())
 		{
 			PreparedStatement ps = con.prepareStatement(sql);
@@ -112,23 +114,25 @@ public class ItemPostgres implements ItemDao {
 	public int addItem(Item in_Item) {
 		int id = -1;
 		String sql = "insert into items "
-				+ "(item_name,"
+				+ "(item_id,"
+				+ " item_name,"
 				+ " item_description,"
 				+ " item_otprice,"
-				+ " item_wkprice,"
-				+ " values (?,?,?,?) returning item_id;";
+				+ " item_wkprice)"
+				+ " values (?,?,?,?,?) returning item_id;";
 		
 		try (Connection con = ConnectionUtil.getConnectionFromEnv()){
 			PreparedStatement ps = con.prepareStatement(sql);
-			ps.setString(1, in_Item.getName());
-			ps.setString(2, in_Item.getDescription());
-			ps.setBigDecimal(3, in_Item.getOneTimePrice());
-			ps.setBigDecimal(4, in_Item.getWeeklyPrice());
+			ps.setInt(1, in_Item.getId());
+			ps.setString(2, in_Item.getName());
+			ps.setString(3, in_Item.getDescription());
+			ps.setBigDecimal(4, in_Item.getOneTimePrice());
+			ps.setBigDecimal(5, in_Item.getWeeklyPrice());
 			
 			ResultSet rs = ps.executeQuery();
 			
 			if(rs.next()) {
-				id = rs.getInt("empl_id");
+				id = rs.getInt("item_id");
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -143,8 +147,8 @@ public class ItemPostgres implements ItemDao {
 				+ "item_name = ?,"
 				+ " item_description = ?,"
 				+ " item_otprice = ?,"
-				+ " item_wkprice = ?,"
-				+ " where item_id = ?";
+				+ " item_wkprice = ?"
+				+ " where item_id = ?;";
 		int rowsChanged = -1;
 				
 		try (Connection con = ConnectionUtil.getConnectionFromEnv()){
@@ -153,6 +157,7 @@ public class ItemPostgres implements ItemDao {
 			ps.setString(2, to_Edit.getDescription());
 			ps.setBigDecimal(3, to_Edit.getOneTimePrice());
 			ps.setBigDecimal(4, to_Edit.getWeeklyPrice());
+			ps.setInt(5, to_Edit.getId());
 			
 			rowsChanged = ps.executeUpdate();
 		} catch (SQLException e) {
@@ -163,17 +168,20 @@ public class ItemPostgres implements ItemDao {
 	}
 
 	@Override
-	public void removeItem(Item to_Remove) {
-		String sql = "delete from items where item_id = ?";
+	public int removeItem(Item to_Remove) {
+		String sql = "delete from items where item_id = ?;";
 		int rowsChanged = -1;
 		try (Connection con = ConnectionUtil.getConnectionFromEnv()){
 			PreparedStatement ps = con.prepareStatement(sql);
+			
 			ps.setInt(1, to_Remove.getId());
+			
 			rowsChanged = ps.executeUpdate();
 			} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}		
+		}
+		return rowsChanged;
 	}
 
 }

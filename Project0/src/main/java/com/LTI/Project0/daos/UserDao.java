@@ -8,5 +8,5 @@ import com.LTI.Project0.models.User;
 public interface UserDao {
 	public abstract User getUser(String username) throws UserNotFoundException;
 	public abstract int addUser(User user) throws SQLException;
-	public abstract String getRole(String username);
+	public abstract String getRole(String username) throws UserNotFoundException;
 }

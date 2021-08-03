@@ -10,20 +10,20 @@ import com.LTI.Project0.models.Offer;
 public class OfferServiceImpl implements OfferService {
 	
 	@Override
-	public void addTransaction(BigDecimal payment, Item selected,String buyer) {
-		DAOFactory.getDF().getOfferDAO().addTransaction(payment, selected,buyer);
+	public int addTransaction(BigDecimal payment, Item selected,String buyer) {
+		return DAOFactory.getDF().getOfferDAO().addTransaction(payment, selected,buyer);
 		
 	}
 
 	@Override
-	public void offerBid(BigDecimal bid, Item selected, String bidder) {
-		DAOFactory.getDF().getOfferDAO().offerBid(bid, selected,bidder);
+	public int offerBid(BigDecimal bid, Item selected, String bidder) {
+		return DAOFactory.getDF().getOfferDAO().offerBid(bid, selected,bidder);
 		
 	}
 
 	@Override
-	public void offerBid(BigDecimal bid, Item selected, String bidder,  boolean auto_Reject) {
-		DAOFactory.getDF().getOfferDAO().offerBid(bid, selected, bidder, auto_Reject);
+	public int offerBid(BigDecimal bid, Item selected, String bidder,  boolean auto_Reject) {
+		return DAOFactory.getDF().getOfferDAO().offerBid(bid, selected, bidder, auto_Reject);
 		
 	}
 
@@ -33,8 +33,8 @@ public class OfferServiceImpl implements OfferService {
 	}
 
 	@Override
-	public void acceptBid(Item selected, String ownerID) {
-		DAOFactory.getDF().getOfferDAO().acceptBid(selected, ownerID);
+	public int acceptBid(Item selected, String ownerID) {
+		return DAOFactory.getDF().getOfferDAO().acceptBid(selected, ownerID);
 		
 	}
 
@@ -49,8 +49,8 @@ public class OfferServiceImpl implements OfferService {
 	}
 
 	@Override
-	public void rejectBid(Item selected, String ownerID) {
-		DAOFactory.getDF().getOfferDAO().rejectBid(selected, ownerID);
+	public int rejectBid(Item selected, String ownerID) {
+		return DAOFactory.getDF().getOfferDAO().rejectBid(selected, ownerID);
 		
 	}
 

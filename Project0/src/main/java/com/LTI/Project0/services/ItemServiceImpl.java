@@ -29,8 +29,8 @@ public class ItemServiceImpl implements ItemService {
 	}
 
 	@Override
-	public void removeItem(Item to_Remove) {
-		DAOFactory.getDF().getItemDAO().removeItem(to_Remove);
+	public int removeItem(Item to_Remove) {
+		return DAOFactory.getDF().getItemDAO().removeItem(to_Remove);
 		
 		
 	}

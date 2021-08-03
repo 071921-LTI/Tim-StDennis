@@ -12,29 +12,6 @@ import com.LTI.Project0.util.ConnectionUtil;
 
 public class AuthServiceImpl implements AuthService {
 
-	//UserDao upcasted to User-DB?
-	
-	//@Override
-	//public boolean authenticateUser() throws AuthException {
-		
-		
-		/*
-		try {
-			User persistedUser = ud.getUser(user.getUsername());
-			if(persistedUser.getPassword().equals(user.getPassword())) {
-				return true;
-			} else {
-				return false;
-			}
-			
-		} catch (UserNotFoundException unf_EX)
-		{
-			unf_EX.printStackTrace();
-		}
-		*/
-		//return false;
-	//}
-
 	@Override
 	public boolean authenticateUser(String userName, String password) throws AuthException {
 		String sql = "select * from users where acct_userName = ? and acct_password = ?";

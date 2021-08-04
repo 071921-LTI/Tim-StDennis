@@ -9,11 +9,16 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.LTI.Project0.exceptions.ItemNotFoundException;
 import com.LTI.Project0.models.Item;
 import com.LTI.Project0.util.ConnectionUtil;
 
 public class ItemPostgres implements ItemDao {
-
+	
+	public static Logger log = LogManager.getRootLogger();
 	@Override
 	public Item getItemByID(int id, boolean owned) {
 		Item selected_item = null;
@@ -40,9 +45,13 @@ public class ItemPostgres implements ItemDao {
 				selected_item = new Item(_id,name,description,OTPrice,WKPrice, owner);
 			}
 		}catch(SQLException e) {
+			log.error("SQL Exception thrown.{Item Postgres:Get Item By ID} Stack Trace is below" + e.getStackTrace());
 			e.printStackTrace();
 		}
-		
+		if(selected_item == null)
+		{
+			log.error("Item Not Found Exception.{Item Postgres:Get Item By ID}");
+		}
 		return selected_item;
 	}
 	
@@ -71,7 +80,7 @@ public class ItemPostgres implements ItemDao {
 				items.add(new_Item);
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			log.error("SQL Exception thrown.{Item Postgres:Get Items w/Owner ID} Stack Trace is below" + e.getStackTrace());
 			e.printStackTrace();
 		}
 		
@@ -102,7 +111,7 @@ public class ItemPostgres implements ItemDao {
 				items.add(new_Item);
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			log.error("SQL Exception thrown.{Item Postgres:Get Items} Stack Trace is below" + e.getStackTrace());
 			e.printStackTrace();
 		}
 		
@@ -135,7 +144,7 @@ public class ItemPostgres implements ItemDao {
 				id = rs.getInt("item_id");
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			log.error("SQL Exception thrown.{Item Postgres:Add Item} Stack Trace is below" + e.getStackTrace());
 			e.printStackTrace();
 		}
 		return id;
@@ -161,7 +170,7 @@ public class ItemPostgres implements ItemDao {
 			
 			rowsChanged = ps.executeUpdate();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			log.error("SQL Exception thrown.{Item Postgres:Edit Item} Stack Trace is below" + e.getStackTrace());
 			e.printStackTrace();
 		}
 		return rowsChanged;
@@ -178,7 +187,7 @@ public class ItemPostgres implements ItemDao {
 			
 			rowsChanged = ps.executeUpdate();
 			} catch (SQLException e) {
-			// TODO Auto-generated catch block
+				log.error("SQL Exception thrown.{Item Postgres:Remove Item} Stack Trace is below" + e.getStackTrace());
 			e.printStackTrace();
 		}
 		return rowsChanged;

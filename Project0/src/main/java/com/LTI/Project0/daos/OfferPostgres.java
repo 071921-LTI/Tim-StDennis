@@ -9,12 +9,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.LTI.Project0.models.Item;
 import com.LTI.Project0.models.Offer;
 import com.LTI.Project0.util.ConnectionUtil;
 
 public class OfferPostgres implements OfferDao {
 
+	public static Logger log = LogManager.getRootLogger();
 	@Override
 	public int addTransaction(BigDecimal payment, Item selected, String buyer) {
 		String sql = "insert into item_offers("
@@ -49,7 +53,7 @@ public class OfferPostgres implements OfferDao {
 				id = ps2.executeUpdate();
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			log.error("SQL Exception thrown.{Offer Postgres: Add Transaction} Stack Trace is below" + e.getStackTrace());
 			e.printStackTrace();
 		}
 
@@ -80,7 +84,7 @@ public class OfferPostgres implements OfferDao {
 				id = rs.getInt("offer_id");
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			log.error("SQL Exception thrown.{Offer Postgres: Offer Bid} Stack Trace is below" + e.getStackTrace());
 			e.printStackTrace();
 		}
 		return id;
@@ -111,7 +115,7 @@ public class OfferPostgres implements OfferDao {
 				id = rs.getInt("offer_id");
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			log.error("SQL Exception thrown.{Offer Postgres: Offer Bid w/Auto Reject} Stack Trace is below" + e.getStackTrace());
 			e.printStackTrace();
 		}
 		return id;
@@ -132,7 +136,7 @@ public class OfferPostgres implements OfferDao {
 			
 			rowsChanged = ps.executeUpdate();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			log.error("SQL Exception thrown.{Offer Postgres: Reject All Other Bids} Stack Trace is below" + e.getStackTrace());
 			e.printStackTrace();
 		}
 		
@@ -166,6 +170,7 @@ public class OfferPostgres implements OfferDao {
 			
 			rowsChanged = ps_UpdOffers.executeUpdate();
 		}catch(SQLException e) {
+			log.error("SQL Exception thrown.{Offer Postgres: Accept Bid} Stack Trace is below" + e.getStackTrace());
 			e.printStackTrace();
 		}
 		rejectAllOtherBids(selected.getId(),ownerID);
@@ -186,6 +191,7 @@ public class OfferPostgres implements OfferDao {
 			
 			rowsChanged = ps_UpdOffers.executeUpdate();
 		}catch(SQLException e) {
+			log.error("SQL Exception thrown.{Offer Postgres: Reject Bid} Stack Trace is below" + e.getStackTrace());
 			e.printStackTrace();
 		}
 		return rowsChanged;
@@ -206,6 +212,7 @@ public class OfferPostgres implements OfferDao {
 				retval = rs.getBigDecimal("offering_to_pay");
 			}
 		}catch(SQLException e) {
+			log.error("SQL Exception thrown.{Offer Postgres: Get Weekly Payment} Stack Trace is below" + e.getStackTrace());
 			e.printStackTrace();
 		}
 		
@@ -232,6 +239,7 @@ public class OfferPostgres implements OfferDao {
 					offers.add(new_deal);
 				}
 		}catch(SQLException e) {
+			log.error("SQL Exception thrown.{Offer Postgres: Get All Pending Offers} Stack Trace is below" + e.getStackTrace());
 			e.printStackTrace();
 		}
 		
@@ -266,6 +274,7 @@ public class OfferPostgres implements OfferDao {
 				}	
 			}
 		}catch(SQLException e) {
+			log.error("SQL Exception thrown.{Offer Postgres: View All Payments} Stack Trace is below" + e.getStackTrace());
 			e.printStackTrace();
 		}		
 	}
@@ -290,6 +299,7 @@ public class OfferPostgres implements OfferDao {
 				retval.setIs_Weekly(rs.getBoolean("is_weekly"));
 			}
 		}catch(SQLException e) {
+			log.error("SQL Exception thrown.{Offer Postgres: Get Offer By ID} Stack Trace is below" + e.getStackTrace());
 			e.printStackTrace();
 		}	
 		

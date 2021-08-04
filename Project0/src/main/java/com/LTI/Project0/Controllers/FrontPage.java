@@ -225,6 +225,9 @@ public class FrontPage extends Menu {
 					System.out.println("Invalid input");
 					break;
 			}
+			offersAvailable = os.getAllPEndingOffers();
+			log.info("Offers Available: " + offersAvailable.size());
+			numOfItems = offersAvailable.size();
 		}while(!In.equals("4"));
 		
 	}
@@ -317,6 +320,9 @@ public class FrontPage extends Menu {
 					System.out.println("Invalid input");
 					break;
 			}
+			itemsAvailable = is.getItems();
+			numOfItems = itemsAvailable.size();
+			log.info("Items Available: " + itemsAvailable.size());
 		}while(!In.equals("5"));
 		
 	}
@@ -391,6 +397,13 @@ public class FrontPage extends Menu {
 			selected = is.getItemByID(InspectedID, false);
 		else
 			selected = is.getItemByID(InspectedID, true);
+		
+		if(selected == null)
+		{
+			log.error("Item selected null.");
+			System.out.println("That item is already owned.");
+			return;
+		}
 		
 		if(selected.getId() == InspectedID)
 		{

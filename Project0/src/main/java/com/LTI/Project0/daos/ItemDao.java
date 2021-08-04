@@ -2,6 +2,7 @@ package com.LTI.Project0.daos;
 
 import java.util.List;
 
+import com.LTI.Project0.exceptions.ItemNotFoundException;
 import com.LTI.Project0.models.Item;
 
 public interface ItemDao {

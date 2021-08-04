@@ -5,12 +5,17 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.LTI.Project0.exceptions.UserNotFoundException;
 import com.LTI.Project0.models.User;
 import com.LTI.Project0.util.ConnectionUtil;
 
 public class UserPostgres implements UserDao{
 
+	public static Logger log = LogManager.getRootLogger();
+	
 	@Override
 	public User getUser(String in_username) throws UserNotFoundException {
 		User gotten_User = null;
@@ -37,6 +42,7 @@ public class UserPostgres implements UserDao{
 			else
 				throw new UserNotFoundException();
 		}catch(SQLException e) {
+			log.error("SQL Exception Thrown. {User Postgres: Get User}. Stack Trace below:" + e.getMessage());
 			e.printStackTrace();
 		}
 		
@@ -76,6 +82,7 @@ public class UserPostgres implements UserDao{
 				Worked = rs.getInt("user_id");
 			}
 		}catch(SQLException e) {
+			log.error("SQL Exception Thrown. {User Postgres: Add User}. Stack Trace below:" + e.getMessage());
 			e.printStackTrace();
 		}
 		
@@ -88,7 +95,7 @@ public class UserPostgres implements UserDao{
 		try {
 			role = getUser(userName);
 		} catch (UserNotFoundException e) {
-			// TODO Auto-generated catch block
+			log.warn("User Not Found Exception thrown. {User Postgres: Get Role} (Probably invaild input...)");
 			throw new UserNotFoundException();
 		}
 		return role.getRole();

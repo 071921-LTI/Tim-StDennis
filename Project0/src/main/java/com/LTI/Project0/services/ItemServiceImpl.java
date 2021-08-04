@@ -3,6 +3,7 @@ package com.LTI.Project0.services;
 import java.util.List;
 
 import com.LTI.Project0.daos.DAOFactory;
+import com.LTI.Project0.exceptions.ItemNotFoundException;
 import com.LTI.Project0.models.Item;
 
 public class ItemServiceImpl implements ItemService {

@@ -1,0 +1,5 @@
+insert into users (first_name, last_name, acct_username, acct_password, acct_email) values ('Dex', 'Wyleman', 'dwyleman0', 'yXVEM740', 'dwyleman0@posterous.com');
+insert into users (first_name, last_name, acct_username, acct_password, acct_email) values ('Katya', 'Duddin', 'kduddin1', 'laZhFcurVXE3', 'kduddin1@simplemachines.org');
+insert into users (first_name, last_name, acct_username, acct_password, acct_email) values ('Em', 'Champneys', 'echampneys2', 'W2XaOCnrj4Cz', 'echampneys2@cisco.com');
+insert into users (first_name, last_name, acct_username, acct_password, acct_email) values ('Delbert', 'Fanshaw', 'dfanshaw3', 'Op18ST7Tju', 'dfanshaw3@ovh.net');
+insert into users (first_name, last_name, acct_username, acct_password, acct_email) values ('Jaquelyn', 'Savatier', 'jsavatier4', 'o3FUYORrMi0', 'jsavatier4@gnu.org');

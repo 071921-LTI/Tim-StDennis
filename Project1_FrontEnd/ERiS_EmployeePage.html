@@ -1,14 +1,35 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>Servlet FrontEnd</title>
-        <link rel="stylesheet" href="Main.css" />
+        <title>ERiS Main Page</title>
+        <link rel="stylesheet" href="EriS_MainPage.css"/>
+        <link rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+            integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+            crossorigin="anonymous">
     </head>
     <body>
         <main>
-            <h1>Employee Reimbursement System(ERiS) Front Page</h1>
-            
+            <h1><u>E</u>mployee <u>R</u>e<u>i</u>mbursement <u>S</u>ystem(ERiS) Front Page</h1>
+            <hr class="line">
+            <div style="float:right;text-align: left;">
+                <button id="btn_AcctInfo">Account Information</button>
+                <button id="btn_NewRequest">Submit Reimbursement Request</button>
+                <button id="btn_LogOut">Log Out</button>
+            </div>
+            <br>
+            <hr class="line">
+            <h2 class="dis_ReimbursementsP">Pending Reimbursements</h2>
+            <h2 class="dis_ReimbursementsA">Approved Reimbursements</h2>
+            <br><br>
+            <ul class="dis_ReimbursementsP" id="ul_PendingReimbursements">
+            </ul>
+            <ul class="dis_ReimbursementsA" id="ul_ApprovedReimbursements">
+            </ul>
         </main>
         <script src="ERiS_E_Page.js"></script>
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
     </body>
 </html>

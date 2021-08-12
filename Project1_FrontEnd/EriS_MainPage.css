@@ -1,0 +1,31 @@
+.dropdown:hover>.dropdown-menu {
+    display: block;
+  }
+  .dropdown-item:hover>.dropdown-menu {
+    display: block;
+  }
+  .nav ul li{
+  list-style-type:none;
+  display: inline;
+  }
+  
+  .navbar-nav .nav-link{display:inline-block;}
+     
+  .ml-auto {display:inline-block!important;}
+  
+  .dropdown>.dropdown-toggle:active {
+    pointer-events: none;
+  }
+
+  .dis_ReimbursementsP {
+      float:left;
+  }
+  .dis_ReimbursementsA{
+      float:right;
+  }
+  .line {
+        height:2px;
+        border-width:0;
+        color:gray;
+        background-color:gray;
+  }

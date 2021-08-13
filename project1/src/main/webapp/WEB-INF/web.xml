@@ -11,12 +11,12 @@
   </welcome-file-list>
   <servlet>
     <description></description>
-    <display-name>Hello_Servlet</display-name>
-    <servlet-name>Hello_Servlet</servlet-name>
-    <servlet-class>com.LTI.Project1.Servlets.Hello_Servlet</servlet-class>
+    <display-name>FrontController</display-name>
+    <servlet-name>front</servlet-name>
+    <servlet-class>com.LTI.Project1.Controllers.FrontController</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>Hello_Servlet</servlet-name>
-    <url-pattern>/Hello_Servlet</url-pattern>
+    <servlet-name>front</servlet-name>
+    <url-pattern>/*</url-pattern>
   </servlet-mapping>
 </web-app>

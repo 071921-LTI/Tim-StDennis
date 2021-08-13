@@ -6,18 +6,18 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.LTI.Project1.Exceptions.UserNotFoundException;
-import com.LTI.Project1.Impls.AuthServiceImpl;
-import com.LTI.Project1.Models.ErsUser;
+import com.LTI.Project1.Exceptions.ReimbursementNotFoundException;
+import com.LTI.Project1.Impls.ReimbursementServiceImpl;
+import com.LTI.Project1.Impls.UserServiceImpl;
 
-public class AuthDelegate implements Delegatable {
+public class ReimbursementDelegate implements Delegatable {
 
-	private AuthServiceImpl as = new AuthServiceImpl();
+	private ReimbursementServiceImpl rsi = new ReimbursementServiceImpl();
 	
 	@Override
 	public void process(HttpServletRequest rq, HttpServletResponse rs) throws ServletException, IOException {
 		String method = rq.getMethod();
-		
+				
 		switch(method)
 		{
 			case "GET":
@@ -36,11 +36,26 @@ public class AuthDelegate implements Delegatable {
 				rs.sendError(405);
 				break;
 		}
+
 	}
 
 	@Override
 	public void handleGet(HttpServletRequest rq, HttpServletResponse rs) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		String state = rq.getAttribute("pathNext").toString();
+		System.out.println(state);
+		if(state.equals("All"))
+		{
+			System.out.println("In All");
+			try {
+				int AllRecords = rsi.GetCountOFReimbursements();
+				System.out.println(AllRecords);
+				rs.setHeader("ifo_ReimRecords", String.valueOf(AllRecords));
+				rs.setStatus(200);
+			}catch(ReimbursementNotFoundException ex)
+			{
+				ex.printStackTrace();
+			}
+		}
 
 	}
 
@@ -52,21 +67,8 @@ public class AuthDelegate implements Delegatable {
 
 	@Override
 	public void handlePost(HttpServletRequest rq, HttpServletResponse rs) throws ServletException, IOException {
-		String username = rq.getParameter("username");
-		String password = rq.getParameter("password");
+		// TODO Auto-generated method stub
 
-		try {
-			ErsUser user = as.login(username, password);
-			if (user != null) {
-				String token = user.getErsUsersId() + ":" + user.getErsUserRole().getErsUserRoleId();
-				rs.setHeader("Authorization", token);
-				rs.setStatus(200);
-			} else {
-
-			}
-		} catch (UserNotFoundException e) {
-			rs.sendError(404);
-		}
 	}
 
 	@Override

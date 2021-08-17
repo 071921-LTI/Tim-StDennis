@@ -1,0 +1,44 @@
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Servlet FrontEnd</title>
+        <link rel="stylesheet" href="EriS_NewReimbursement.css" />
+    </head>
+    <body>
+        <main>
+            <h1>Submit New Reimbursement</h1>
+            <hr class="line">
+            <div style="float:right;text-align: left;">
+                <button id="btn_Return">Main Menu</button>
+                <button id="btn_AccountInfo">Account Information</button>
+                <button id="btn_LogOut">Log Out</button>
+            </div>
+            <br>
+            <hr class="line">
+            <br><br>
+            <label>Reimbursement #</label>
+            <label id="ifo_NumReimbursements"></label>
+            <br><br>
+            <label>Receipt Name:</label>
+            <input type="text" id="txt_ReceiptName">
+            <br>
+            <label>Type of Reimbursement:</label>
+            <select id="sel_Type">
+                <option value=0>Lodging</option>
+                <option value=1>Travel</option>
+                <option value=2>Food</option>
+                <option value=3>Other</option>
+            </select>
+            <br>
+            <label>Reimbursement Amount:</label>
+            <input type="number" id="num_Amount">
+            <br>
+            <label>Reimbursement Description:</label>
+            <br>
+            <textarea maxlength="250" style="width:300px;height:100px" id="txt_ar_ReimbursementDscr"></textarea>
+            <br><label id="lbl_charRemain"></label><br><br>
+            <button id="btn_SubmitReim">Submit Reimbursement</button>
+        </main>
+        <script src="EriS_NewReimbursement.js"></script>
+    </body>
+</html>

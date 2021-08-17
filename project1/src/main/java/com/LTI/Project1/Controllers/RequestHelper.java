@@ -7,12 +7,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.LTI.Project1.Delegates.AuthDelegate;
+import com.LTI.Project1.Delegates.ReimbursementDelegate;
 import com.LTI.Project1.Delegates.UserDelegate;
 
 public class RequestHelper {
 	
-	//private UserDelegate ud = new UserDelegate();
+	private UserDelegate ud = new UserDelegate();
 	private AuthDelegate ad = new AuthDelegate();
+	private ReimbursementDelegate rd = new ReimbursementDelegate();
 	
 	public void process(HttpServletRequest rq, HttpServletResponse rs) throws IOException, ServletException {
 		String path = rq.getPathInfo();
@@ -37,9 +39,19 @@ public class RequestHelper {
 			}
 			switch(path) 
 			{
+				case "User":
+				{
+					ud.process(rq, rs);
+					break;
+				}
 				case "authorize":
 				{
 					ad.process(rq,rs);
+					break;
+				}
+				case "Reimbursement":
+				{
+					rd.process(rq,rs);
 					break;
 				}
 				default:

@@ -11,21 +11,49 @@
     <body>
         <main>
             <h1>Account Information</h1>
+            <hr class="line">
+            <div style="float:right;text-align: left;">
+                <button id="btn_Return">Main Menu</button>
+                <button id="btn_NewRequest">Submit Reimbursement Request</button>
+                <button id="btn_LogOut">Log Out</button>
+            </div>
+            <br>
+            <hr class="line">
             <label>First Name:</label>
-            <label id="lbl_FirstName"></label>
+            <input type="text" readonly id="lbl_FirstName"></input>
             <br>
             <label>Last Name:</label>
-            <label id="lbl_LastName"></label>
+            <input type="text" readonly id="lbl_LastName"></input>
             <br>
             <label>UserName:</label>
-            <label id="lbl_UserName"></label>
+            <input type="text" readonly id="lbl_UserName"></input>
             <br>
             <label>Password:</label>
-            <label id="lbl_Password"></label>
+            <input type="password" readonly id="lbl_Password"></input>
             <br>
             <label>Email:</label>
-            <label id="lbl_Email"></label>
-            <br>
+            <input type="text" readonly id="lbl_Email"></input>
+            <br><br>
+            <button id="btn_UpdateInformation">Update your information</button>
+            <div id="UpdatePanel" style="display:none">
+                <label>First Name:</label>
+                <input type="text" id="upd_FirstName"></input>
+                <br>
+                <label>Last Name:</label>
+                <input type="text" id="upd_LastName"></input>
+                <br>
+                <label>UserName:</label>
+                <input type="text" id="upd_UserName"></input>
+                <br>
+                <label>Password:</label>
+                <input type="text" id="upd_Password"></input>
+                <br>
+                <label>Email:</label>
+                <input type="text" id="upd_Email"></input>
+                <br>
+                <button id="btn_SendUpdate">Confirm Update</button>
+              </div>
+              
         </main>
         <script src="ERiS_EmployeeInfo.js"></script>
     </body>

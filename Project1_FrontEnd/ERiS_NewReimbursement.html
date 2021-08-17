@@ -24,10 +24,10 @@
             <br>
             <label>Type of Reimbursement:</label>
             <select id="sel_Type">
-                <option>Lodging</option>
-                <option>Travel</option>
-                <option>Food</option>
-                <option>Other</option>
+                <option value=0>Lodging</option>
+                <option value=1>Travel</option>
+                <option value=2>Food</option>
+                <option value=3>Other</option>
             </select>
             <br>
             <label>Reimbursement Amount:</label>
@@ -36,7 +36,8 @@
             <label>Reimbursement Description:</label>
             <br>
             <textarea maxlength="250" style="width:300px;height:100px" id="txt_ar_ReimbursementDscr"></textarea>
-            <br><label id="lbl_charRemain"></label>
+            <br><label id="lbl_charRemain"></label><br><br>
+            <button id="btn_SubmitReim">Submit Reimbursement</button>
         </main>
         <script src="EriS_NewReimbursement.js"></script>
     </body>

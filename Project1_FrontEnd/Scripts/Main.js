@@ -16,8 +16,13 @@ function login(){
             let authToken = xhr.getResponseHeader("Authorization");
             
             sessionStorage.setItem("token", authToken);
-
-            window.location.href="ERiS_EmployeePage.html";
+            let RoleCheck = authToken.split(":")[1];
+            if(RoleCheck == 1)
+            {
+                window.location.href="ERiS_EmployeePage.html";
+            }else{
+                window.location.href="ERiS_ManagerPage.html";
+            }
             console.log("Log in sucessful");
         } else if (xhr.readyState === 4){
             console.log('Something went wrong...');

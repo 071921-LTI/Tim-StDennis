@@ -136,4 +136,35 @@ public class ErsReimbursement implements Serializable {
 		this.ersUser2 = ersUser2;
 	}
 
+	
+	public String toShortString()
+	{
+		return "ID: " +  getReimbId() + ",Name: " + getReimbReceipt() + ",Type: " + 
+					getErsReimbursementType().getReimbType() + ",Status: " +  getErsReimbursementStatus().getReimbStatus() +
+					",Author: " +  getErsUser1().getUserFirstName() + " " + getErsUser1().getUserLastName() + "|";
+	}
+
+	public String ToDetailedString() {
+		String Details = "Reimbursement #: " + getReimbId() + ",Name: " + getReimbReceipt() + ",Reimbursement Type: " +
+					getErsReimbursementType().getReimbType() + ",Status of Reimbursement: " + getErsReimbursementStatus().getReimbStatus() + ",Author: " +  getErsUser1().getUserFirstName() + " " + getErsUser1().getUserLastName() + ",Date Created: " + getReimbSubmitted(); 
+		if(getErsUser2() == null)
+		{
+			Details += ",Resolver: Not Resolved Yet";
+		}
+		else
+		{
+			Details += ",Resolver: " + getErsUser2().getUserFirstName() + " " + getErsUser2().getUserLastName();
+		}
+		if(getReimbResolved() == null)
+		{
+			Details += ",Date Resolved: Not Resolved Yet";
+		}
+		else
+		{
+			Details += ",Date Resolved: " + getReimbResolved();
+		}
+		Details += ",Description: " + getReimbDescription();
+		return Details;
+	}
+	
 }

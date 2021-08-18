@@ -36,6 +36,8 @@ public class RequestHelper {
 				String[] paths = path.split("/");
 				path = paths[0];
 				rq.setAttribute("pathNext", paths[1]);
+				if(paths.length >= 3)
+					rq.setAttribute("pathSecond", paths[2]);
 			}
 			switch(path) 
 			{

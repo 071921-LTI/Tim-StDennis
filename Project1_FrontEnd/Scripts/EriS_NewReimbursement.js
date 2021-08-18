@@ -1,4 +1,5 @@
 let token = sessionStorage.getItem("token");
+let RoleCheck = token.split(":")[1];
 if(!token){
   window.location.href="Login.html";
 }
@@ -23,7 +24,6 @@ let numReim = document.getElementById('ifo_NumReimbursements');
   console.log("sent");
   xhr.onreadystatechange = function(){
       if(xhr.readyState === 4 && xhr.status === 200){
-          
             let info = xhr.getResponseHeader("ifo_ReimRecords").split(":");
             console.log(info);
             numReim.innerText = info[0]; 
@@ -35,7 +35,7 @@ let numReim = document.getElementById('ifo_NumReimbursements');
   function SubmitNewReim(){
     let userName = sessionStorage.getItem("token");
     userName = userName.split(":");
-    let apiURL = 'http://localhost:8080/Project1/Reimbursement';
+    let apiURL = 'http://localhost:8080/Project1/Reimbursement/Submit';
     let xhr = new XMLHttpRequest();
     let Reim_ID = document.getElementById('ifo_NumReimbursements').innerText;
     let Reim_Name = document.getElementById('txt_ReceiptName').value;
@@ -55,16 +55,26 @@ let numReim = document.getElementById('ifo_NumReimbursements');
             &ReimDescr=${Reim_Descr}&ReimSubmitter=${userName[0]}`;
     xhr.send(requestBody);
   }
-
+  
   function ReturnToMainMenu() {
-    window.location.href="ERiS_EmployeePage.html";
+      if(RoleCheck == 1)
+      {
+          window.location.href="ERiS_EmployeePage.html";
+      } else if(RoleCheck == 2) {
+          window.location.href="ERiS_ManagerPage.html";
+      }
+  }
+  
+  function LogOut() {
+      sessionStorage.removeItem("token");
+      window.location.href="Login.html";
+  }
+  
+  function GoToAccountInfo(){
+      window.location.href="ERiS_EmployeeInfo.html";
+  }
+  
+  function SubmitNewRequest(){
+      window.location.href="ERiS_NewReimbursement.html";
   }
 
-  function LogOut(){
-    sessionStorage.removeItem("token");
-    window.location.href="Login.html";
-}
-
-function GoToAccountInfo(){
-  window.location.href="ERiS_EmployeeInfo.html";
-}

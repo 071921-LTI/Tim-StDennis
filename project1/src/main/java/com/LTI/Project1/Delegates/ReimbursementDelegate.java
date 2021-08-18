@@ -1,6 +1,7 @@
 package com.LTI.Project1.Delegates;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.LTI.Project1.Exceptions.ReimbursementNotFoundException;
 import com.LTI.Project1.Impls.ReimbursementServiceImpl;
 import com.LTI.Project1.Impls.UserServiceImpl;
+import com.LTI.Project1.Models.ErsReimbursement;
 
 public class ReimbursementDelegate implements Delegatable {
 
@@ -56,19 +58,95 @@ public class ReimbursementDelegate implements Delegatable {
 				ex.printStackTrace();
 			}
 		}
+		else if(state.equals("All-Details"))
+		{
+			System.out.println("All Details");
+			String hdr = rq.getHeader("Authorization");
+			String[] user = hdr.split(":");
+			try {
+				List<ErsReimbursement> reimbursements = null;
+				if(user[1].equals("1"))
+				{
+					reimbursements = rsi.GetAllReimbursementsForUser(user[0]);
+				}
+				else if(user[1].equals("2"))
+				{
+					reimbursements = rsi.GetAllReimbursements();
+				}
+				 
+				String shortList = "";
+				for(ErsReimbursement ers : reimbursements)
+				{
+					System.out.println("Adding " + ers.toShortString());
+					shortList += ers.toShortString();
+				}
+				rs.setHeader("ifo_ShortReimList", shortList);
+			}catch(ReimbursementNotFoundException ex)
+			{
+				ex.printStackTrace();
+			}
+		}
+		else if(state.equals("Details"))
+		{
+			String lookup = rq.getAttribute("pathSecond").toString();
+			System.out.println("Details on " + lookup);
+			try {
+				ErsReimbursement FullDetails = rsi.GetDetailsOn(lookup);
+				System.out.println(FullDetails.ToDetailedString());
+				rs.setHeader("ifo_DetailedReimList", FullDetails.ToDetailedString());
+				rs.setStatus(200);
+			}catch(ReimbursementNotFoundException ex)
+			{
+				ex.printStackTrace();
+			}
+		}
 
 	}
 
 	@Override
 	public void handlePut(HttpServletRequest rq, HttpServletResponse rs) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public void handlePost(HttpServletRequest rq, HttpServletResponse rs) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		String state = rq.getAttribute("pathNext").toString();
+		if(state.equals("Submit"))
+		{
+			System.out.println(state);
+			SubmitNewReimbursement(rq, rs);
+		}
+		else if(state.equals("Update"))
+		{
+			System.out.println(state);
+			UpdateReimbursement(rq,rs);
+		}
+		
 
+	}
+
+	private void UpdateReimbursement(HttpServletRequest rq, HttpServletResponse rs) {
+		try {
+			
+			String R_ID = rq.getParameter("ReimID"),R_Status = rq.getParameter("ReimStatus"),R_Resolver= rq.getParameter("ReimResolver");
+			rsi.UpdateReimbursement(R_ID,R_Status,R_Resolver);
+			rs.setStatus(200);
+		} catch(Exception ex) {
+			ex.printStackTrace();
+		}
+		
+	}
+
+	private void SubmitNewReimbursement(HttpServletRequest rq, HttpServletResponse rs) {
+		try {
+			String R_ID = rq.getParameter("ReimID"),R_Name = rq.getParameter("ReimName"),R_Type = rq.getParameter("ReimType"),
+						R_Price = rq.getParameter("ReimPrice"), R_Descr = rq.getParameter("ReimDescr"), R_Submitter = rq.getParameter("ReimSubmitter");
+			rsi.AddNewReimbursement(R_ID,R_Name,R_Type,R_Price,R_Descr,R_Submitter);
+			rs.setStatus(200);
+		} catch(Exception ex) {
+			ex.printStackTrace();
+		}
+		
 	}
 
 	@Override

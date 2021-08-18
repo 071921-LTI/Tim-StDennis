@@ -1,4 +1,3 @@
-let token = sessionStorage.getItem("token");
 let _FirstName = document.getElementById("lbl_FirstName");
 let _LastName = document.getElementById("lbl_LastName");
 let _UserName = document.getElementById("lbl_UserName");
@@ -10,10 +9,12 @@ let _upd_UserName = document.getElementById("upd_UserName");
 let _upd_PassWord = document.getElementById("upd_Password");
 let _upd_Email = document.getElementById("upd_Email");
 document.getElementById('btn_Return').addEventListener("click", ReturnToMainMenu);
+document.getElementById('btn_NewRequest').addEventListener("click",SubmitNewRequest);
 document.getElementById('btn_UpdateInformation').addEventListener("click", StartUpdating);
 document.getElementById('btn_SendUpdate').addEventListener("click",SendUpdate);
 document.getElementById('btn_LogOut').addEventListener("click", LogOut);
-
+let token = sessionStorage.getItem("token");
+let RoleCheck = token.split(":")[1];
 if(!token){
     window.location.href="Login.html";
 } else
@@ -45,10 +46,10 @@ function GetUserInfo()
             console.log('Something went wrong...');
         }
     }
-}
-
-function ReturnToMainMenu(){
-    window.location.href="ERiS_EmployeePage.html";
+    if(RoleCheck == 2)
+    {
+        document.getElementById('btn_NewRequest').style.display = "none";
+    }
 }
 
 function StartUpdating(){
@@ -93,7 +94,24 @@ function clearUpdValues(){
     _upd_UserName.value = " ";
 }
 
-function LogOut(){
+function ReturnToMainMenu() {
+    if(RoleCheck == 1)
+    {
+        window.location.href="ERiS_EmployeePage.html";
+    } else if(RoleCheck == 2) {
+        window.location.href="ERiS_ManagerPage.html";
+    }
+}
+
+function LogOut() {
     sessionStorage.removeItem("token");
     window.location.href="Login.html";
+}
+
+function GoToAccountInfo(){
+    window.location.href="ERiS_EmployeeInfo.html";
+}
+
+function SubmitNewRequest(){
+    window.location.href="ERiS_NewReimbursement.html";
 }

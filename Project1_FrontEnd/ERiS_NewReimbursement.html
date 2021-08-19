@@ -1,7 +1,7 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>Servlet FrontEnd</title>
+        <title>New Reimbursement</title>
         <link rel="stylesheet" href="./Styles/EriS_NewReimbursement.css" />
     </head>
     <body>
@@ -16,28 +16,59 @@
             <br>
             <hr class="line">
             <br><br>
-            <label>Reimbursement #</label>
-            <label id="ifo_NumReimbursements"></label>
-            <br><br>
-            <label>Receipt Name:</label>
-            <input type="text" id="txt_ReceiptName">
-            <br>
-            <label>Type of Reimbursement:</label>
-            <select id="sel_Type">
-                <option value=0>Lodging</option>
-                <option value=1>Travel</option>
-                <option value=2>Food</option>
-                <option value=3>Other</option>
-            </select>
-            <br>
-            <label>Reimbursement Amount:</label>
-            <input type="number" id="num_Amount">
-            <br>
-            <label>Reimbursement Description:</label>
-            <br>
-            <textarea maxlength="250" style="width:300px;height:100px" id="txt_ar_ReimbursementDscr"></textarea>
-            <br><label id="lbl_charRemain"></label><br><br>
-            <button id="btn_SubmitReim">Submit Reimbursement</button>
+            <table>
+                <tr>
+                    <td>
+                        <label>Reimbursement #</label>
+                    </td>
+                    <td>
+                        <label id="ifo_NumReimbursements"></label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Receipt Name:</label>
+                    </td>
+                    <td>
+                        <input type="text" id="txt_ReceiptName">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Type of Reimbursement:</label>
+                    </td>
+                    <td>
+                        <select id="sel_Type">
+                            <option value=0>Lodging</option>
+                            <option value=1>Travel</option>
+                            <option value=2>Food</option>
+                            <option value=3>Other</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Reimbursement Amount:</label>
+                    </td>
+                    <td>
+                        <input type="number" id="num_Amount">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Reimbursement Description:</label>
+                    </td>
+                    <td>
+                        <textarea maxlength="250" style="width:300px;height:100px" id="txt_ar_ReimbursementDscr"></textarea>
+                        <label id="lbl_charRemain"></label>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <button id="btn_SubmitReim" style="width:100%">Submit Reimbursement</button>
+                    </td>
+                </tr>
+            </table>
         </main>
         <script src="./Scripts/EriS_NewReimbursement.js"></script>
     </body>

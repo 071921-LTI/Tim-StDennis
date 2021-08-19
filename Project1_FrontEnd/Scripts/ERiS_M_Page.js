@@ -1,5 +1,5 @@
 document.getElementById('btn_AcctInfo').addEventListener("click", GoToAccountInfo);
-document.getElementById('btn_NewRequest').addEventListener("click", SubmitNewRequest);
+document.getElementById('btn_ViewAllEmployees').addEventListener("click", ViewAllEmployees);
 document.getElementById('btn_LogOut').addEventListener("click", LogOut);
 
 let token = sessionStorage.getItem("token");
@@ -52,11 +52,13 @@ function AddToList(status, details)
     let Reimb_Type = document.createTextNode(details[2]);
     let Reimb_ID = document.createTextNode(details[0]);
     let Reimb_Author = document.createTextNode(details[4]);
+    let Reimb_Status = document.createTextNode("Status: " + status);
     ///There has to be a better way to do this...
     let br = document.createElement("br");
     let br2 = document.createElement("br");
     let br3 = document.createElement("br");
     let br4 = document.createElement("br");
+    let br5 = document.createElement("br");
     Reimb.appendChild(Reimb_ID);
     Reimb.appendChild(br);
     Reimb.appendChild(Reimb_Name);
@@ -65,13 +67,15 @@ function AddToList(status, details)
     Reimb.appendChild(br3);
     Reimb.appendChild(Reimb_Author);
     Reimb.appendChild(br4);
+    Reimb.appendChild(Reimb_Status);
+    Reimb.appendChild(br5);
     Reimb.appendChild(Reimb_btn);
     if(status === "PENDING") {
         console.log("Pending Reimbursement");
         let ListToAdd = document.getElementById('ul_PendingReimbursements');
         ListToAdd.appendChild(Reimb);
     }else if(status === "ACCEPTED" || status === "REJECTED") {
-        console.log("Accepted Reimbursement");
+        console.log("Resolved Reimbursement");
         let ListToAdd = document.getElementById('ul_ResolvedReimbursements');
         ListToAdd.appendChild(Reimb);
     }
@@ -104,6 +108,6 @@ function GoToAccountInfo(){
     window.location.href="ERiS_EmployeeInfo.html";
 }
 
-function SubmitNewRequest(){
-    window.location.href="ERiS_NewReimbursement.html";
+function ViewAllEmployees(){
+    window.location.href="ERiS_ViewAllEmployees.html";
 }

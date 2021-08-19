@@ -42,6 +42,7 @@ function GetUserInfo()
             _PassWord.value = parsed[3];
             _Email.value = parsed[4];
             console.log(UserInfo);
+            $(".se-pre-con").fadeOut("slow");
         } else if (xhr.readyState === 4){
             console.log('Something went wrong...');
         }

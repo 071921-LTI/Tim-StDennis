@@ -13,6 +13,18 @@ import java.util.List;
 @Entity
 @Table(name="ers_users")
 public class ErsUser implements Serializable {
+	public ErsUser(Integer ersUsersId, String ersPassword, String ersUsername, String userEmail, String userFirstName,
+			String userLastName, ErsUserRole ersUserRole) {
+		super();
+		this.ersUsersId = ersUsersId;
+		this.ersPassword = ersPassword;
+		this.ersUsername = ersUsername;
+		this.userEmail = userEmail;
+		this.userFirstName = userFirstName;
+		this.userLastName = userLastName;
+		this.ersUserRole = ersUserRole;
+	}
+
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -153,9 +165,17 @@ public class ErsUser implements Serializable {
 	@Override
 	public String toString()
 	{
-		return "User Details:\nID#:" + getErsUsersId() + "\nPassword:" + getErsPassword() 
-				+ "\nUserName:" + getErsUsername() + "\nName:" + getUserLastName() + " " 
-					+ getUserFirstName() + "\nUser Role:" + getErsUserRole().getErsUserRoleId(); 
+		return "User Details:\nID#:" + getErsUsersId() + 
+				"\nPassword:" + getErsPassword() +
+				 "\nUserName:" + getErsUsername() + 
+				 "\nName:" + getUserLastName() + " " + getUserFirstName() + 
+				 "\nUser Role:" + getErsUserRole().getErsUserRoleId(); 
 	}
-
+	
+	public String toStringDetailed()
+	{
+		return "ID#: " + getErsUsersId() + 
+				",UserName: " + getErsUsername() + 
+				",Name: " + getUserFirstName() + " " + getUserLastName() + "|";
+	}
 }

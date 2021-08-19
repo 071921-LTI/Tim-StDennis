@@ -12,6 +12,12 @@ import java.util.List;
 @Entity
 @Table(name="ers_user_roles")
 public class ErsUserRole implements Serializable {
+	public ErsUserRole(Integer ersUserRoleId, String userRole) {
+		super();
+		this.ersUserRoleId = ersUserRoleId;
+		this.userRole = userRole;
+	}
+
 	private static final long serialVersionUID = 1L;
 
 	@Id

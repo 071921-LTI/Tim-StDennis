@@ -10,25 +10,17 @@
         <div class="se-pre-con"></div>
         <main>
             <h1><u>E</u>mployee <u>R</u>e<u>i</u>mbursement <u>S</u>ystem(ERiS) Front Page</h1>
+            <h2 style="text-align: center;">Manager View</h2>
             <hr class="line">
             <div style="float:right;text-align: left;">
+                <button id="btn_ReturnToMainMenu">Return to Main Menu</button>
                 <button id="btn_AcctInfo">Account Information</button>
-                <button id="btn_NewRequest">Submit Reimbursement Request</button>
                 <button id="btn_LogOut">Log Out</button>
             </div>
             <br>
             <hr class="line">
-            <h2 class="dis_ReimbursementsP">Pending Reimbursements</h2>
-            <h2 class="dis_ReimbursementsA">Approved Reimbursements</h2>
-            <h2 class="dis_ReimbursementsR">Rejected Reimbursements</h2>
-            <br><br>
-            <ul class="dis_ReimbursementsP" id="ul_PendingReimbursements">
-            </ul>
-            <ul class="dis_ReimbursementsA" id="ul_ApprovedReimbursements">
-            </ul>
-            <ul class="dis_ReimbursementsR" id="ul_RejectedReimbursements">
-            </ul>
+            <ul id="ul_AllEmployees"></ul>
         </main>
-        <script src="./Scripts/ERiS_E_Page.js"></script>
+        <script src="./Scripts/ERiS_ViewAllEmployees.js"></script>
     </body>
 </html>

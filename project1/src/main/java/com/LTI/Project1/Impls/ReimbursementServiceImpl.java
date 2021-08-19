@@ -11,6 +11,8 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.metamodel.Metamodel;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.type.EntityType;
 
@@ -24,15 +26,19 @@ import com.LTI.Project1.util.HibernateUtil;
 
 public class ReimbursementServiceImpl implements ReimbursementDAO {
 
+	public static Logger log = LogManager.getRootLogger();
+	
 	@Override
 	public int GetCountOFReimbursements() throws ReimbursementNotFoundException {
 		int retVal = 0;
 		try(Session s = HibernateUtil.getSessionFactory().openSession()){
+			log.info("Attempting to get the number of reimbursements in DB");
 			long count = (long)s.createQuery("SELECT COUNT(e) FROM ErsReimbursement e").getSingleResult();
 			retVal = Math.toIntExact(count);
 			System.out.println(count);
 		}catch(Exception e)
 		{
+			log.error("No rows found, returning 0.");
 			System.out.println("No rows found, moving on.");
 			return 0;
 		}
@@ -42,6 +48,7 @@ public class ReimbursementServiceImpl implements ReimbursementDAO {
 	
 	@Override
 	public void AddNewReimbursement(String r_ID, String r_Name, String r_Type, String r_Price, String r_Descr, String r_Submitter) {
+		log.info("Attempting to add a New Reimbursement");
 		ErsReimbursement n_Reim = new ErsReimbursement();
 		n_Reim.setReimbId(Integer.valueOf(r_ID));
 		n_Reim.setReimbReceipt(r_Name);
@@ -63,10 +70,12 @@ public class ReimbursementServiceImpl implements ReimbursementDAO {
 			s.save(n_Reim);
 			s.getTransaction().commit();
 		}
+		log.info("Adding Reimbursement was a success!");
 	}
 
 	@Override
 	public List<ErsReimbursement> GetAllReimbursementsForUser(String parameter) throws ReimbursementNotFoundException  {
+		log.info("Attempting to get a list of reimbursements from DB");
 		List<ErsReimbursement> retval = new ArrayList<ErsReimbursement>();
 		try(Session s = HibernateUtil.getSessionFactory().openSession()){
 			ErsUser user = new ErsUser();
@@ -76,12 +85,15 @@ public class ReimbursementServiceImpl implements ReimbursementDAO {
 			tq.setParameter("username", user);
 		    retval = tq.getResultList();
 		}
+		log.info("Reimbursement List acquired");
 		return retval;
+		
 	}
 
 	@Override
 	public ErsReimbursement GetDetailsOn(String lookup) throws ReimbursementNotFoundException {
 		ErsReimbursement retval = null;
+		log.info("Attempting to get the details of a Reimbursement(" + lookup + ") in DB");
 		int lookup_id = Integer.valueOf(lookup);
 		try(Session s = HibernateUtil.getSessionFactory().openSession()){
 			String HQL = "from ErsReimbursement where reimbId = :reimb_ID";
@@ -89,6 +101,7 @@ public class ReimbursementServiceImpl implements ReimbursementDAO {
 			tq.setParameter("reimb_ID", lookup_id);
 			retval = tq.getSingleResult();
 		}
+		log.info("Gained the Details of Reimbursement (" + lookup + ")");
 		return retval;
 	}
 
@@ -106,6 +119,7 @@ public class ReimbursementServiceImpl implements ReimbursementDAO {
 	@Override
 	public void UpdateReimbursement(String r_ID, String r_Status, String r_Resolver) throws ReimbursementNotFoundException  {
 		ErsReimbursement retval = null;
+		log.info("Attempting to update the reimbursement(" + r_ID + ")");
 		int lookup_id = Integer.valueOf(r_ID);
 		try(Session s = HibernateUtil.getSessionFactory().openSession()){
 			String HQL = "from ErsReimbursement where reimbId = :reimb_ID";
@@ -130,6 +144,7 @@ public class ReimbursementServiceImpl implements ReimbursementDAO {
 			s.save(retval);
 			s.getTransaction().commit();
 		}
+		log.info("Updated the Reimbursement");
 		
 	}
 }

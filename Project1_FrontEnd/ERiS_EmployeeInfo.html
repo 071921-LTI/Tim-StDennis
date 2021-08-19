@@ -3,12 +3,11 @@
         <meta charset="UTF-8" />
         <title>ERiS Main Page</title>
         <link rel="stylesheet" href="./Styles/ERiS_EmployeeInfo.css"/>
-        <link rel="stylesheet"
-            href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-            integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-            crossorigin="anonymous">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js"></script>
     </head>
     <body>
+        <div class="se-pre-con"></div>
         <main>
             <h1>Account Information</h1>
             <hr class="line">
@@ -19,41 +18,103 @@
             </div>
             <br>
             <hr class="line">
-            <label>First Name:</label>
-            <input type="text" readonly id="lbl_FirstName"></input>
+            <table>
+                <tr>
+                    <td>
+                        <label>First Name:</label>
+                    </td>
+                    <td>
+                        <input type="text" readonly id="lbl_FirstName"></input>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Last Name:</label>
+                    </td>
+                    <td>
+                        <input type="text" readonly id="lbl_LastName"></input>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>UserName:</label>
+                    </td>
+                    <td>
+                        <input type="text" readonly id="lbl_UserName"></input>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Password:</label>
+                    </td>
+                    <td>
+                        <input type="password" readonly id="lbl_Password"></input>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Email:</label>
+                    </td>
+                    <td>
+                        <input type="text" readonly id="lbl_Email"></input>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <button id="btn_UpdateInformation" style="width:100%">Update your information</button>
+                    </td>
+                </tr>
+            </table>
             <br>
-            <label>Last Name:</label>
-            <input type="text" readonly id="lbl_LastName"></input>
-            <br>
-            <label>UserName:</label>
-            <input type="text" readonly id="lbl_UserName"></input>
-            <br>
-            <label>Password:</label>
-            <input type="password" readonly id="lbl_Password"></input>
-            <br>
-            <label>Email:</label>
-            <input type="text" readonly id="lbl_Email"></input>
-            <br><br>
-            <button id="btn_UpdateInformation">Update your information</button>
             <div id="UpdatePanel" style="display:none">
-                <label>First Name:</label>
-                <input type="text" id="upd_FirstName"></input>
-                <br>
-                <label>Last Name:</label>
-                <input type="text" id="upd_LastName"></input>
-                <br>
-                <label>UserName:</label>
-                <input type="text" id="upd_UserName"></input>
-                <br>
-                <label>Password:</label>
-                <input type="text" id="upd_Password"></input>
-                <br>
-                <label>Email:</label>
-                <input type="text" id="upd_Email"></input>
-                <br>
-                <button id="btn_SendUpdate">Confirm Update</button>
-              </div>
-              
+                <table>
+                    <tr>
+                        <td>
+                            <label>First Name:</label>
+                        </td>
+                        <td>
+                            <input type="text" id="upd_FirstName"></input>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Last Name:</label>
+                        </td>
+                        <td>
+                            <input type="text" id="upd_LastName"></input>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>UserName:</label>
+                        </td>
+                        <td>
+                            <input type="text" id="upd_UserName"></input>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Password:</label>
+                        </td>
+                        <td>
+                            <input type="text" id="upd_Password"></input>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Email:</label>
+                        </td>
+                        <td>
+                            <input type="text" id="upd_Email"></input>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <button id="btn_SendUpdate">Confirm Update</button>
+                        </td>
+                    </tr>
+                </table>
+              </div>  
         </main>
         <script src="./Scripts/ERiS_EmployeeInfo.js"></script>
     </body>

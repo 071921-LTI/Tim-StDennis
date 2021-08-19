@@ -3,18 +3,24 @@ package com.LTI.Project1.Delegates;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.LTI.Project1.Exceptions.UserNotFoundException;
 import com.LTI.Project1.Impls.UserServiceImpl;
+import com.LTI.Project1.Models.ErsReimbursement;
 import com.LTI.Project1.Models.ErsUser;
 
 public class UserDelegate implements Delegatable{
 
 	private UserServiceImpl us = new UserServiceImpl();
+	public static Logger log = LogManager.getRootLogger();
 	
 	@Override
 	public void process(HttpServletRequest rq, HttpServletResponse rs) throws ServletException, IOException {
@@ -44,7 +50,39 @@ public class UserDelegate implements Delegatable{
 	@Override
 	public void handleGet(HttpServletRequest rq, HttpServletResponse rs) throws ServletException, IOException {
 		String iD = rq.getAttribute("pathNext").toString();
+		if(iD.equals("All"))
+		{
+			log.info("Processing All Users GET");
+			System.out.println("Getting All Users");
+			GetAllUsers(rq,rs);
+		}
+		else
+		{
+			log.info("Processing Single User GET");
+			System.out.println("Getting User Details");
+			GetUserDetail(rq,rs);
+		}
+	}
+
+	private void GetAllUsers(HttpServletRequest rq, HttpServletResponse rs) {
+		try {
+			List<ErsUser> foundUsers = us.FindAllUsers();
+			String shortList = "";
+			for(ErsUser ers : foundUsers)
+			{
+				System.out.println("Adding " + ers.toStringDetailed());
+				shortList += ers.toStringDetailed();
+			}
+			rs.setHeader("ifo_EmployeeList", shortList);
+		} catch(UserNotFoundException ex)
+		{
+			ex.printStackTrace();
+		}
 		
+	}
+
+	private void GetUserDetail(HttpServletRequest rq, HttpServletResponse rs) {
+		String iD = rq.getAttribute("pathNext").toString();
 		try {
 			ErsUser foundUser = us.FindUserById(iD);
 		    rs.setHeader("ifo_UserInfo", "yes");
@@ -59,6 +97,7 @@ public class UserDelegate implements Delegatable{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 	}
 
 	@Override

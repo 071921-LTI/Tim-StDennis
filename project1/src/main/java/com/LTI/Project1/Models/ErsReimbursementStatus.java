@@ -12,6 +12,12 @@ import java.util.List;
 @Entity
 @Table(name="ers_reimbursement_status")
 public class ErsReimbursementStatus implements Serializable {
+	public ErsReimbursementStatus(Integer reimbStatusId, String reimbStatus) {
+		super();
+		this.reimbStatusId = reimbStatusId;
+		this.reimbStatus = reimbStatus;
+	}
+
 	private static final long serialVersionUID = 1L;
 
 	@Id

@@ -3,7 +3,6 @@ document.getElementById('logIn').addEventListener("click", login);
 let apiURL = 'http://localhost:8080/Project1/authorize';
 
 function login(){
-
     let username = document.getElementById("userName").value;
     let password = document.getElementById("passWord").value;
 

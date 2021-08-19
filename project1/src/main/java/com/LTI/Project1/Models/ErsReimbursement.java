@@ -12,6 +12,23 @@ import java.sql.Timestamp;
 @Entity
 @Table(name="ers_reimbursement")
 public class ErsReimbursement implements Serializable {
+	
+	public ErsReimbursement(Integer reimbId, double reimbAmount, String reimbDescription, String reimbReceipt,
+			Timestamp reimbResolved, Timestamp reimbSubmitted, ErsReimbursementStatus ersReimbursementStatus,
+			ErsReimbursementType ersReimbursementType, ErsUser ersUser1, ErsUser ersUser2) {
+		super();
+		this.reimbId = reimbId;
+		this.reimbAmount = reimbAmount;
+		this.reimbDescription = reimbDescription;
+		this.reimbReceipt = reimbReceipt;
+		this.reimbResolved = reimbResolved;
+		this.reimbSubmitted = reimbSubmitted;
+		this.ersReimbursementStatus = ersReimbursementStatus;
+		this.ersReimbursementType = ersReimbursementType;
+		this.ersUser1 = ersUser1;
+		this.ersUser2 = ersUser2;
+	}
+
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -139,31 +156,38 @@ public class ErsReimbursement implements Serializable {
 	
 	public String toShortString()
 	{
-		return "ID: " +  getReimbId() + ",Name: " + getReimbReceipt() + ",Type: " + 
-					getErsReimbursementType().getReimbType() + ",Status: " +  getErsReimbursementStatus().getReimbStatus() +
-					",Author: " +  getErsUser1().getUserFirstName() + " " + getErsUser1().getUserLastName() + "|";
+		return "ID: " +  getReimbId() + 
+				",Name: " + getReimbReceipt() + 
+				",Type: " + getErsReimbursementType().getReimbType() + 
+				",Status: " +  getErsReimbursementStatus().getReimbStatus() +
+				",Author: " +  getErsUser1().getUserFirstName() + " " + getErsUser1().getUserLastName() + "|";
 	}
 
 	public String ToDetailedString() {
-		String Details = "Reimbursement #: " + getReimbId() + ",Name: " + getReimbReceipt() + ",Reimbursement Type: " +
-					getErsReimbursementType().getReimbType() + ",Status of Reimbursement: " + getErsReimbursementStatus().getReimbStatus() + ",Author: " +  getErsUser1().getUserFirstName() + " " + getErsUser1().getUserLastName() + ",Date Created: " + getReimbSubmitted(); 
+		String Details = "Reimbursement #: " + getReimbId() + 
+						 "|Name: " + getReimbReceipt() + 
+						 "|Reimbursement Type: " + getErsReimbursementType().getReimbType() + 
+						 "|Status of Reimbursement: " + getErsReimbursementStatus().getReimbStatus() + 
+						 "|Author: " +  getErsUser1().getUserFirstName() + " " + getErsUser1().getUserLastName() + 
+						 "|Date Created: \"" + getReimbSubmitted() + "\" " +
+						 "|Amount: " + String.format("%.2f",getReimbAmount()); 
 		if(getErsUser2() == null)
 		{
-			Details += ",Resolver: Not Resolved Yet";
+			Details += "|Resolver: Not Resolved Yet";
 		}
 		else
 		{
-			Details += ",Resolver: " + getErsUser2().getUserFirstName() + " " + getErsUser2().getUserLastName();
+			Details += "|Resolver: " + getErsUser2().getUserFirstName() + " " + getErsUser2().getUserLastName();
 		}
 		if(getReimbResolved() == null)
 		{
-			Details += ",Date Resolved: Not Resolved Yet";
+			Details += "|Date Resolved: Not Resolved Yet";
 		}
 		else
 		{
-			Details += ",Date Resolved: " + getReimbResolved();
+			Details += "|Date Resolved: \"" + getReimbResolved() + "\" ";
 		}
-		Details += ",Description: " + getReimbDescription();
+		Details += "|Description: \"" + getReimbDescription() + "\" ";
 		return Details;
 	}
 	

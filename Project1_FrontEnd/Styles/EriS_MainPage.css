@@ -18,10 +18,19 @@
   }
 
   .dis_ReimbursementsP {
-      float:left;
+    display: inline-block;
+    width: 33%;
+    height:20px;
+  }
+  .dis_ReimbursementsR {
+    display: inline-block;
+    width: 33%;
+    height:20px;
   }
   .dis_ReimbursementsA{
-      float:right;
+    display: inline-block;
+    width: 33%;
+    height:20px;
   }
   .line {
         height:2px;

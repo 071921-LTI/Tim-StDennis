@@ -1,4 +1,5 @@
 document.getElementById('btn_Return').addEventListener("click", ReturnToMainMenu);
+document.getElementById('btn_ViewAllEmployees').addEventListener("click", ViewAllEmployees);
 document.getElementById('btn_AccountInfo').addEventListener("click", GoToAccountInfo);
 document.getElementById('btn_LogOut').addEventListener("click", LogOut);
 document.getElementById('btn_AcceptReimbursement').addEventListener("click",AcceptReimbursement);
@@ -23,29 +24,10 @@ function GetDetailedReimbursement(){
     xhr.send();
     xhr.onreadystatechange = function(){
         if(xhr.readyState === 4 && xhr.status === 200){
-            let info = xhr.getResponseHeader("ifo_DetailedReimList").split(",");
+            let info = xhr.getResponseHeader("ifo_DetailedReimList").split("|");
             let displayTable = document.getElementById("tbl_ReimbDetails");
             console.log(info);
-            let overflow = info.length - 9;
-            if(overflow > 0)
-            {
-                //There -should- be 8 elements returned. The Eighth element being the Description.
-                let Description = info[8]; 
-                let Actual = info.length + overflow
-                for(let o = 9; o <= Actual; o++)
-                {
-                    //Start a for loop at the next interval, to stop repeats.
-                    if(!info[o])
-                    {
-                        console.log("Skipping " + info[o]);
-                        continue;
-                    }
-                    console.log(info[o]);
-                    Description += "," + info[o];
-                }
-                info[8] = Description;
-            }
-            for (let i = 0; i < 9; i++) {
+            for (let i = 0; i < 10; i++) {
                 let KeyVal = info[i].split(":");
                 console.log(KeyVal);
                 let tableRow = document.createElement("tr");
@@ -68,6 +50,7 @@ function GetDetailedReimbursement(){
                 tableRow.appendChild(tableColValue);
                 displayTable.appendChild(tableRow);
             }
+            $(".se-pre-con").fadeOut("slow");
             CheckRole();  
       } else if (xhr.readyState === 4){
           console.log('Something went wrong...');
@@ -108,11 +91,15 @@ function ModifyReimbursement(NewStatus)
 
 function CheckRole()
 {
-    if(RoleCheck==2 && document.getElementById("lbl_Row3").innerText == "PENDING")
+    if(RoleCheck==2)
     {
-        //This is a Manager!
-        document.getElementById("btn_AcceptReimbursement").style.display = "inline";
-        document.getElementById("btn_RejectReimbursement").style.display = "inline";
+        document.getElementById("btn_ViewAllEmployees").style.display = "inline";
+        if(document.getElementById("lbl_Row3").innerText == "PENDING")
+        {
+            //This is a Manager!
+            document.getElementById("btn_AcceptReimbursement").style.display = "inline";
+            document.getElementById("btn_RejectReimbursement").style.display = "inline";
+        }
     }
 }
 
@@ -136,4 +123,8 @@ function GoToAccountInfo(){
 
 function SubmitNewRequest(){
     window.location.href="ERiS_NewReimbursement.html";
+}
+
+function ViewAllEmployees(){
+    window.location.href="ERiS_ViewAllEmployees.html";
 }

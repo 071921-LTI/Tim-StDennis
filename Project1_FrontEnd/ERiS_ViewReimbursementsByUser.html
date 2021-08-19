@@ -12,22 +12,23 @@
             <h1>View Reimbursement</h1>
             <hr class="line">
             <div style="float:right;text-align: left;">
-                <button id="btn_Return">Main Menu</button>
-                <button id="btn_ViewAllEmployees" style="display:none">View All Employees</button>
+                <button id="btn_Return">Return To Main Menu</button>
+                <button id="btn_ViewAll">View All Employees</button>
                 <button id="btn_AccountInfo">Account Information</button>
                 <button id="btn_LogOut">Log Out</button>
             </div>
             <br>
             <hr class="line">
             <br><br>
-            <table id="tbl_ReimbDetails">
-
+            <table id="tbl_ReimbShortList">
+                <tr>
+                    <td>ID</td>
+                    <td>Name</td>
+                    <td>Status</td>
+                    <td>More Details</td>
+                </tr>
             </table>
-            <div>
-                <button id="btn_AcceptReimbursement" style="display:none">Accept Reimbursement</button>
-                <button id="btn_RejectReimbursement" style="display:none">Reject Reimbursement</button>
-            </div>
         </main>
-        <script src="./Scripts/ERiS_ViewReimbursement.js"></script>
+        <script src="./Scripts/ERiS_ViewReimbursementByUser.js"></script>
     </body>
 </html>
